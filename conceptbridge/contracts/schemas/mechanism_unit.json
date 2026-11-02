@@ -1,0 +1,290 @@
+{
+  "$defs": {
+    "ActionRef": {
+      "additionalProperties": false,
+      "description": "机制里的动作。action_class 只能取 12 类之一。",
+      "properties": {
+        "action_class": {
+          "enum": [
+            "inhibit",
+            "promote",
+            "transport",
+            "transform",
+            "recognize",
+            "amplify",
+            "stabilize",
+            "degrade",
+            "compete",
+            "isolate",
+            "trigger",
+            "regulate"
+          ],
+          "title": "Action Class",
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "promote",
+            "inhibit",
+            "neutral"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "verb": {
+          "minLength": 1,
+          "title": "Verb",
+          "type": "string"
+        }
+      },
+      "required": [
+        "verb",
+        "action_class",
+        "polarity"
+      ],
+      "title": "ActionRef",
+      "type": "object"
+    },
+    "ConceptRef": {
+      "additionalProperties": false,
+      "description": "机制里的一个实体。concept_id 是归一后的 ID，surface 是原文写法。",
+      "properties": {
+        "concept_id": {
+          "minLength": 1,
+          "title": "Concept Id",
+          "type": "string"
+        },
+        "surface": {
+          "minLength": 1,
+          "title": "Surface",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "structure",
+            "process",
+            "substance",
+            "signal",
+            "state"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "concept_id",
+        "surface",
+        "type"
+      ],
+      "title": "ConceptRef",
+      "type": "object"
+    },
+    "EvidenceSpan": {
+      "additionalProperties": false,
+      "description": "原文证据。前端点击引用时按 char_start/char_end 高亮。",
+      "properties": {
+        "char_end": {
+          "minimum": 0,
+          "title": "Char End",
+          "type": "integer"
+        },
+        "char_start": {
+          "minimum": 0,
+          "title": "Char Start",
+          "type": "integer"
+        },
+        "section": {
+          "default": "abstract",
+          "enum": [
+            "abstract",
+            "intro",
+            "results",
+            "discussion",
+            "conclusion",
+            "unknown"
+          ],
+          "title": "Section",
+          "type": "string"
+        },
+        "span": {
+          "minLength": 1,
+          "title": "Span",
+          "type": "string"
+        }
+      },
+      "required": [
+        "span",
+        "char_start",
+        "char_end"
+      ],
+      "title": "EvidenceSpan",
+      "type": "object"
+    },
+    "StructuralSignature": {
+      "additionalProperties": false,
+      "description": "结构签名——本项目\"结构相似而非文字相似\"的载体。",
+      "properties": {
+        "action_class": {
+          "enum": [
+            "inhibit",
+            "promote",
+            "transport",
+            "transform",
+            "recognize",
+            "amplify",
+            "stabilize",
+            "degrade",
+            "compete",
+            "isolate",
+            "trigger",
+            "regulate"
+          ],
+          "title": "Action Class",
+          "type": "string"
+        },
+        "arity": {
+          "maximum": 8,
+          "minimum": 2,
+          "title": "Arity",
+          "type": "integer"
+        },
+        "causality": {
+          "enum": [
+            "direct",
+            "mediated",
+            "feedback",
+            "threshold"
+          ],
+          "title": "Causality",
+          "type": "string"
+        },
+        "condition_count": {
+          "minimum": 0,
+          "title": "Condition Count",
+          "type": "integer"
+        },
+        "condition_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Condition Keys",
+          "type": "array"
+        },
+        "object_type": {
+          "enum": [
+            "structure",
+            "process",
+            "substance",
+            "signal",
+            "state"
+          ],
+          "title": "Object Type",
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "promote",
+            "inhibit",
+            "neutral"
+          ],
+          "title": "Polarity",
+          "type": "string"
+        },
+        "subject_type": {
+          "enum": [
+            "structure",
+            "process",
+            "substance",
+            "signal",
+            "state"
+          ],
+          "title": "Subject Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject_type",
+        "action_class",
+        "object_type",
+        "causality",
+        "polarity",
+        "condition_count",
+        "arity"
+      ],
+      "title": "StructuralSignature",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "系统的原子单位：一个可比较的机制。",
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/ActionRef"
+    },
+    "conditions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conditions",
+      "type": "array"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "domain": {
+      "minLength": 1,
+      "title": "Domain",
+      "type": "string"
+    },
+    "evidence": {
+      "$ref": "#/$defs/EvidenceSpan"
+    },
+    "extractor_version": {
+      "minLength": 1,
+      "title": "Extractor Version",
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "object": {
+      "$ref": "#/$defs/ConceptRef"
+    },
+    "paper_id": {
+      "minLength": 1,
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "result": {
+      "minLength": 1,
+      "title": "Result",
+      "type": "string"
+    },
+    "signature": {
+      "$ref": "#/$defs/StructuralSignature"
+    },
+    "subject": {
+      "$ref": "#/$defs/ConceptRef"
+    }
+  },
+  "required": [
+    "id",
+    "paper_id",
+    "domain",
+    "subject",
+    "action",
+    "object",
+    "result",
+    "signature",
+    "evidence",
+    "confidence",
+    "extractor_version"
+  ],
+  "title": "MechanismUnit",
+  "type": "object"
+}

@@ -1,0 +1,889 @@
+components:
+  schemas:
+    ActionRef:
+      additionalProperties: false
+      description: 机制里的动作。action_class 只能取 12 类之一。
+      properties:
+        action_class:
+          enum:
+          - inhibit
+          - promote
+          - transport
+          - transform
+          - recognize
+          - amplify
+          - stabilize
+          - degrade
+          - compete
+          - isolate
+          - trigger
+          - regulate
+          title: Action Class
+          type: string
+        polarity:
+          enum:
+          - promote
+          - inhibit
+          - neutral
+          title: Polarity
+          type: string
+        verb:
+          minLength: 1
+          title: Verb
+          type: string
+      required:
+      - verb
+      - action_class
+      - polarity
+      title: ActionRef
+      type: object
+    Bridge:
+      additionalProperties: false
+      description: 一条跨域桥：目标机制 + 为什么能对上 + 能迁移什么。
+      properties:
+        alignment:
+          items:
+            $ref: '#/components/schemas/RoleAlignment'
+          title: Alignment
+          type: array
+        citations:
+          items:
+            $ref: '#/components/schemas/Citation'
+          minItems: 1
+          title: Citations
+          type: array
+        differences:
+          items:
+            type: string
+          title: Differences
+          type: array
+        scores:
+          $ref: '#/components/schemas/BridgeScores'
+        target_domain:
+          minLength: 1
+          title: Target Domain
+          type: string
+        target_mechanism:
+          $ref: '#/components/schemas/MechanismUnit'
+        transferable_hypothesis:
+          minLength: 1
+          title: Transferable Hypothesis
+          type: string
+      required:
+      - target_mechanism
+      - target_domain
+      - scores
+      - transferable_hypothesis
+      - citations
+      title: Bridge
+      type: object
+    BridgeRequest:
+      additionalProperties: false
+      properties:
+        debug:
+          default: false
+          title: Debug
+          type: boolean
+        exclude_domains:
+          items:
+            type: string
+          title: Exclude Domains
+          type: array
+        query:
+          maxLength: 200
+          minLength: 2
+          title: Query
+          type: string
+        source_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Domain
+        top_k:
+          default: 5
+          maximum: 20.0
+          minimum: 1.0
+          title: Top K
+          type: integer
+      required:
+      - query
+      title: BridgeRequest
+      type: object
+    BridgeResult:
+      additionalProperties: false
+      description: POST /api/v1/bridge 的返回，也是前端唯一数据源。
+      properties:
+        bridges:
+          items:
+            $ref: '#/components/schemas/Bridge'
+          title: Bridges
+          type: array
+        meta:
+          $ref: '#/components/schemas/ResultMeta'
+        query:
+          minLength: 1
+          title: Query
+          type: string
+        source:
+          $ref: '#/components/schemas/BridgeSource'
+      required:
+      - query
+      - source
+      - meta
+      title: BridgeResult
+      type: object
+    BridgeScores:
+      additionalProperties: false
+      properties:
+        domain_distance:
+          maximum: 1.0
+          minimum: 0.0
+          title: Domain Distance
+          type: number
+        final:
+          maximum: 1.0
+          minimum: 0.0
+          title: Final
+          type: number
+        semantic:
+          maximum: 1.0
+          minimum: 0.0
+          title: Semantic
+          type: number
+        structural:
+          maximum: 1.0
+          minimum: 0.0
+          title: Structural
+          type: number
+        triviality:
+          maximum: 1.0
+          minimum: 0.0
+          title: Triviality
+          type: number
+      required:
+      - structural
+      - semantic
+      - domain_distance
+      - triviality
+      - final
+      title: BridgeScores
+      type: object
+    BridgeSource:
+      additionalProperties: false
+      properties:
+        domain:
+          minLength: 1
+          title: Domain
+          type: string
+        mechanisms:
+          items:
+            $ref: '#/components/schemas/MechanismUnit'
+          title: Mechanisms
+          type: array
+        subgraph:
+          $ref: '#/components/schemas/Subgraph'
+      required:
+      - domain
+      title: BridgeSource
+      type: object
+    Citation:
+      additionalProperties: false
+      properties:
+        char_end:
+          minimum: 0.0
+          title: Char End
+          type: integer
+        char_start:
+          minimum: 0.0
+          title: Char Start
+          type: integer
+        paper_id:
+          minLength: 1
+          title: Paper Id
+          type: string
+        span:
+          minLength: 1
+          title: Span
+          type: string
+      required:
+      - paper_id
+      - span
+      - char_start
+      - char_end
+      title: Citation
+      type: object
+    ConceptRef:
+      additionalProperties: false
+      description: 机制里的一个实体。concept_id 是归一后的 ID，surface 是原文写法。
+      properties:
+        concept_id:
+          minLength: 1
+          title: Concept Id
+          type: string
+        surface:
+          minLength: 1
+          title: Surface
+          type: string
+        type:
+          enum:
+          - structure
+          - process
+          - substance
+          - signal
+          - state
+          title: Type
+          type: string
+      required:
+      - concept_id
+      - surface
+      - type
+      title: ConceptRef
+      type: object
+    EvalReport:
+      additionalProperties: false
+      properties:
+        case_study_ids:
+          items:
+            type: string
+          title: Case Study Ids
+          type: array
+        generated_at:
+          minLength: 1
+          title: Generated At
+          type: string
+        gold_pairs:
+          minimum: 0.0
+          title: Gold Pairs
+          type: integer
+        hard_negatives:
+          minimum: 0.0
+          title: Hard Negatives
+          type: integer
+        kappa:
+          anyOf:
+          - maximum: 1.0
+            minimum: -1.0
+            type: number
+          - type: 'null'
+          title: Kappa
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+        rows:
+          items:
+            $ref: '#/components/schemas/EvalRow'
+          title: Rows
+          type: array
+      required:
+      - generated_at
+      - gold_pairs
+      - hard_negatives
+      title: EvalReport
+      type: object
+    EvalRow:
+      additionalProperties: false
+      description: 消融表的一行。
+      properties:
+        config:
+          minLength: 1
+          title: Config
+          type: string
+        mrr_at_10:
+          anyOf:
+          - maximum: 1.0
+            minimum: 0.0
+            type: number
+          - type: 'null'
+          title: Mrr At 10
+        p_at_5:
+          anyOf:
+          - maximum: 1.0
+            minimum: 0.0
+            type: number
+          - type: 'null'
+          title: P At 5
+        use_domain_distance:
+          default: false
+          title: Use Domain Distance
+          type: boolean
+        use_rerank:
+          default: false
+          title: Use Rerank
+          type: boolean
+        use_structural:
+          default: false
+          title: Use Structural
+          type: boolean
+      required:
+      - config
+      title: EvalRow
+      type: object
+    EvidenceSpan:
+      additionalProperties: false
+      description: 原文证据。前端点击引用时按 char_start/char_end 高亮。
+      properties:
+        char_end:
+          minimum: 0.0
+          title: Char End
+          type: integer
+        char_start:
+          minimum: 0.0
+          title: Char Start
+          type: integer
+        section:
+          default: abstract
+          enum:
+          - abstract
+          - intro
+          - results
+          - discussion
+          - conclusion
+          - unknown
+          title: Section
+          type: string
+        span:
+          minLength: 1
+          title: Span
+          type: string
+      required:
+      - span
+      - char_start
+      - char_end
+      title: EvidenceSpan
+      type: object
+    FeedbackRequest:
+      additionalProperties: false
+      properties:
+        bridge_mechanism_id:
+          minLength: 1
+          title: Bridge Mechanism Id
+          type: string
+        note:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Note
+        query:
+          minLength: 1
+          title: Query
+          type: string
+        useful:
+          title: Useful
+          type: boolean
+      required:
+      - query
+      - bridge_mechanism_id
+      - useful
+      title: FeedbackRequest
+      type: object
+    GraphEdge:
+      additionalProperties: false
+      properties:
+        action_class:
+          enum:
+          - inhibit
+          - promote
+          - transport
+          - transform
+          - recognize
+          - amplify
+          - stabilize
+          - degrade
+          - compete
+          - isolate
+          - trigger
+          - regulate
+          title: Action Class
+          type: string
+        id:
+          minLength: 1
+          title: Id
+          type: string
+        source:
+          minLength: 1
+          title: Source
+          type: string
+        target:
+          minLength: 1
+          title: Target
+          type: string
+      required:
+      - id
+      - source
+      - target
+      - action_class
+      title: GraphEdge
+      type: object
+    GraphNode:
+      additionalProperties: false
+      properties:
+        domain:
+          minLength: 1
+          title: Domain
+          type: string
+        id:
+          minLength: 1
+          title: Id
+          type: string
+        label:
+          minLength: 1
+          title: Label
+          type: string
+        type:
+          enum:
+          - structure
+          - process
+          - substance
+          - signal
+          - state
+          title: Type
+          type: string
+      required:
+      - id
+      - label
+      - domain
+      - type
+      title: GraphNode
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    HealthResponse:
+      additionalProperties: false
+      properties:
+        demo_mode:
+          title: Demo Mode
+          type: boolean
+        graph_ready:
+          title: Graph Ready
+          type: boolean
+        graph_version:
+          title: Graph Version
+          type: string
+        status:
+          enum:
+          - ok
+          - degraded
+          title: Status
+          type: string
+        version:
+          title: Version
+          type: string
+      required:
+      - status
+      - version
+      - graph_version
+      - graph_ready
+      - demo_mode
+      title: HealthResponse
+      type: object
+    MechanismUnit:
+      additionalProperties: false
+      description: 系统的原子单位：一个可比较的机制。
+      properties:
+        action:
+          $ref: '#/components/schemas/ActionRef'
+        conditions:
+          items:
+            type: string
+          title: Conditions
+          type: array
+        confidence:
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+          type: number
+        domain:
+          minLength: 1
+          title: Domain
+          type: string
+        evidence:
+          $ref: '#/components/schemas/EvidenceSpan'
+        extractor_version:
+          minLength: 1
+          title: Extractor Version
+          type: string
+        id:
+          minLength: 1
+          title: Id
+          type: string
+        object:
+          $ref: '#/components/schemas/ConceptRef'
+        paper_id:
+          minLength: 1
+          title: Paper Id
+          type: string
+        result:
+          minLength: 1
+          title: Result
+          type: string
+        signature:
+          $ref: '#/components/schemas/StructuralSignature'
+        subject:
+          $ref: '#/components/schemas/ConceptRef'
+      required:
+      - id
+      - paper_id
+      - domain
+      - subject
+      - action
+      - object
+      - result
+      - signature
+      - evidence
+      - confidence
+      - extractor_version
+      title: MechanismUnit
+      type: object
+    ResultMeta:
+      additionalProperties: false
+      properties:
+        candidates:
+          minimum: 0.0
+          title: Candidates
+          type: integer
+        degraded:
+          default: false
+          title: Degraded
+          type: boolean
+        graph_version:
+          minLength: 1
+          title: Graph Version
+          type: string
+        latency_ms:
+          minimum: 0.0
+          title: Latency Ms
+          type: integer
+        stub:
+          default: false
+          title: Stub
+          type: boolean
+      required:
+      - latency_ms
+      - candidates
+      - graph_version
+      title: ResultMeta
+      type: object
+    RoleAlignment:
+      additionalProperties: false
+      description: 一个桥的节点级对应关系，前端用它做对齐高亮。
+      properties:
+        reason:
+          minLength: 1
+          title: Reason
+          type: string
+        source_concept_id:
+          minLength: 1
+          title: Source Concept Id
+          type: string
+        source_role:
+          enum:
+          - subject
+          - object
+          title: Source Role
+          type: string
+        target_concept_id:
+          minLength: 1
+          title: Target Concept Id
+          type: string
+        target_role:
+          enum:
+          - subject
+          - object
+          title: Target Role
+          type: string
+      required:
+      - source_role
+      - source_concept_id
+      - target_role
+      - target_concept_id
+      - reason
+      title: RoleAlignment
+      type: object
+    StructuralSignature:
+      additionalProperties: false
+      description: 结构签名——本项目"结构相似而非文字相似"的载体。
+      properties:
+        action_class:
+          enum:
+          - inhibit
+          - promote
+          - transport
+          - transform
+          - recognize
+          - amplify
+          - stabilize
+          - degrade
+          - compete
+          - isolate
+          - trigger
+          - regulate
+          title: Action Class
+          type: string
+        arity:
+          maximum: 8.0
+          minimum: 2.0
+          title: Arity
+          type: integer
+        causality:
+          enum:
+          - direct
+          - mediated
+          - feedback
+          - threshold
+          title: Causality
+          type: string
+        condition_count:
+          minimum: 0.0
+          title: Condition Count
+          type: integer
+        condition_keys:
+          items:
+            type: string
+          title: Condition Keys
+          type: array
+        object_type:
+          enum:
+          - structure
+          - process
+          - substance
+          - signal
+          - state
+          title: Object Type
+          type: string
+        polarity:
+          enum:
+          - promote
+          - inhibit
+          - neutral
+          title: Polarity
+          type: string
+        subject_type:
+          enum:
+          - structure
+          - process
+          - substance
+          - signal
+          - state
+          title: Subject Type
+          type: string
+      required:
+      - subject_type
+      - action_class
+      - object_type
+      - causality
+      - polarity
+      - condition_count
+      - arity
+      title: StructuralSignature
+      type: object
+    Subgraph:
+      additionalProperties: false
+      properties:
+        edges:
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+          title: Edges
+          type: array
+        nodes:
+          items:
+            $ref: '#/components/schemas/GraphNode'
+          title: Nodes
+          type: array
+      title: Subgraph
+      type: object
+    SubgraphResponse:
+      additionalProperties: false
+      properties:
+        concept_id:
+          title: Concept Id
+          type: string
+        hops:
+          maximum: 3.0
+          minimum: 1.0
+          title: Hops
+          type: integer
+        subgraph:
+          $ref: '#/components/schemas/Subgraph'
+      required:
+      - concept_id
+      - hops
+      - subgraph
+      title: SubgraphResponse
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  description: 输入领域 A 的难题，从领域 B 的文献检索结构相似的机制，返回可迁移假设、差异说明与原文出处。
+  title: ConceptBridge API
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /api/v1/bridge:
+    post:
+      operationId: create_bridge_api_v1_bridge_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BridgeRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BridgeResult'
+          description: 源机制、跨域桥、假设与引用
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: 跨域结构类比检索
+      tags:
+      - bridge
+  /api/v1/eval/report:
+    get:
+      operationId: get_eval_report_api_v1_eval_report_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvalReport'
+          description: Successful Response
+      summary: 最新评测报告
+      tags:
+      - eval
+  /api/v1/feedback:
+    post:
+      operationId: submit_feedback_api_v1_feedback_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                title: Response Submit Feedback Api V1 Feedback Post
+                type: object
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: 桥是否有用
+      tags:
+      - feedback
+  /api/v1/graph/subgraph:
+    get:
+      operationId: get_subgraph_api_v1_graph_subgraph_get
+      parameters:
+      - in: query
+        name: concept_id
+        required: true
+        schema:
+          minLength: 1
+          title: Concept Id
+          type: string
+      - in: query
+        name: hops
+        required: false
+        schema:
+          default: 2
+          maximum: 3
+          minimum: 1
+          title: Hops
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubgraphResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: 概念 N 跳子图
+      tags:
+      - graph
+  /api/v1/health:
+    get:
+      operationId: health_api_v1_health_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: Successful Response
+      summary: 存活与图状态
+      tags:
+      - health
+  /api/v1/mechanisms/{mechanism_id}:
+    get:
+      operationId: get_mechanism_api_v1_mechanisms__mechanism_id__get
+      parameters:
+      - in: path
+        name: mechanism_id
+        required: true
+        schema:
+          title: Mechanism Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MechanismUnit'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: 机制详情
+      tags:
+      - mechanism

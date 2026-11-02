@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-11-02T12:49:27Z",
+  "gold_pairs": 30,
+  "hard_negatives": 10,
+  "kappa": null,
+  "rows": [
+    {
+      "config": "A 纯语义(baseline)",
+      "use_structural": false,
+      "use_domain_distance": false,
+      "use_rerank": false,
+      "p_at_5": null,
+      "mrr_at_10": null
+    },
+    {
+      "config": "B +结构签名",
+      "use_structural": true,
+      "use_domain_distance": false,
+      "use_rerank": false,
+      "p_at_5": null,
+      "mrr_at_10": null
+    },
+    {
+      "config": "C +领域距离",
+      "use_structural": true,
+      "use_domain_distance": true,
+      "use_rerank": false,
+      "p_at_5": null,
+      "mrr_at_10": null
+    },
+    {
+      "config": "D 完整",
+      "use_structural": true,
+      "use_domain_distance": true,
+      "use_rerank": true,
+      "p_at_5": null,
+      "mrr_at_10": null
+    }
+  ],
+  "case_study_ids": [
+    "g01",
+    "g02",
+    "g03"
+  ],
+  "notes": "脚手架：指标待 P2-T5 用真实匹配结果填充"
+}

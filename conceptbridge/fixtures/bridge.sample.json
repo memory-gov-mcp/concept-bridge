@@ -1,0 +1,267 @@
+{
+  "query": "锂枝晶抑制",
+  "source": {
+    "domain": "materials_science",
+    "mechanisms": [
+      {
+        "id": "mu_01J9A2K7",
+        "paper_id": "W4382917001",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_sei_film",
+          "surface": "SEI 膜",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "selectively_transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_li_ion_flux",
+          "surface": "锂离子通量",
+          "type": "process"
+        },
+        "conditions": ["concentration_gradient", "electric_field"],
+        "result": "锂离子定向通过，溶剂分子与阴离子被阻挡，沉积趋于均匀",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "process",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 2,
+          "condition_keys": ["concentration_gradient", "electric_field"],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "The SEI acts as a selective interphase that permits Li+ transport while blocking solvent and anion permeation, thereby homogenizing the deposition flux.",
+          "section": "abstract",
+          "char_start": 120,
+          "char_end": 262
+        },
+        "confidence": 0.82,
+        "extractor_version": "ext-v1.0"
+      },
+      {
+        "id": "mu_01J9A2K8",
+        "paper_id": "W4382917002",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_deposition_tip",
+          "surface": "尖端沉积位点",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "amplify",
+          "action_class": "amplify",
+          "polarity": "promote"
+        },
+        "object": {
+          "concept_id": "c_dendrite_growth",
+          "surface": "枝晶生长",
+          "type": "process"
+        },
+        "conditions": ["high_current_density"],
+        "result": "局部电流密度升高，尖端电场集中，枝晶加速生长",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "amplify",
+          "object_type": "process",
+          "causality": "feedback",
+          "polarity": "promote",
+          "condition_count": 1,
+          "condition_keys": ["high_current_density"],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Tip-enhanced local current density creates a positive feedback loop that accelerates dendritic growth under high current density.",
+          "section": "results",
+          "char_start": 44,
+          "char_end": 176
+        },
+        "confidence": 0.74,
+        "extractor_version": "ext-v1.0"
+      }
+    ],
+    "subgraph": {
+      "nodes": [
+        {"id": "c_sei_film", "label": "SEI 膜", "domain": "materials_science", "type": "structure"},
+        {"id": "c_li_ion_flux", "label": "锂离子通量", "domain": "materials_science", "type": "process"},
+        {"id": "c_deposition_tip", "label": "尖端沉积位点", "domain": "materials_science", "type": "structure"},
+        {"id": "c_dendrite_growth", "label": "枝晶生长", "domain": "materials_science", "type": "process"}
+      ],
+      "edges": [
+        {"id": "e_sei_flux", "source": "c_sei_film", "target": "c_li_ion_flux", "action_class": "transport"},
+        {"id": "e_tip_dendrite", "source": "c_deposition_tip", "target": "c_dendrite_growth", "action_class": "amplify"}
+      ]
+    }
+  },
+  "bridges": [
+    {
+      "target_mechanism": {
+        "id": "mu_01J9B001",
+        "paper_id": "W2100011001",
+        "domain": "biology",
+        "subject": {
+          "concept_id": "c_plasma_membrane",
+          "surface": "细胞膜",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "selectively_transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_ion_homeostasis",
+          "surface": "胞内离子稳态",
+          "type": "process"
+        },
+        "conditions": ["concentration_gradient", "membrane_potential"],
+        "result": "特定离子经通道蛋白进入细胞，其余被阻挡，胞内浓度维持稳定",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "process",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 2,
+          "condition_keys": ["concentration_gradient", "membrane_potential"],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Plasma membrane ion channels selectively conduct specific ions down their electrochemical gradient while excluding others, maintaining cytosolic homeostasis.",
+          "section": "abstract",
+          "char_start": 88,
+          "char_end": 248
+        },
+        "confidence": 0.88,
+        "extractor_version": "ext-v1.0"
+      },
+      "target_domain": "biology",
+      "scores": {
+        "structural": 0.71,
+        "semantic": 0.55,
+        "domain_distance": 0.93,
+        "triviality": 0.0,
+        "final": 0.68
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_sei_film",
+          "target_role": "subject",
+          "target_concept_id": "c_plasma_membrane",
+          "reason": "两者都是薄的选择性屏障结构"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_li_ion_flux",
+          "target_role": "object",
+          "target_concept_id": "c_ion_homeostasis",
+          "reason": "两者都是被选择性调控的离子输运过程"
+        }
+      ],
+      "transferable_hypothesis": "在 SEI 中接枝固定化磺酸根位点构建单离子导体通道，使锂离子迁移数 t+ 从 0.3 提升至 0.7 以上，预期将枝晶成核过电位提高一倍以上",
+      "differences": [
+        "生物膜含主动转运泵，可逆电化学梯度耗能输运；SEI 只有被动扩散，无法主动富集",
+        "生物膜厚度约 5 nm 且具流动性；SEI 为 10-50 nm 的无机/有机复合层，力学约束显著"
+      ],
+      "citations": [
+        {
+          "paper_id": "W2100011001",
+          "span": "Plasma membrane ion channels selectively conduct specific ions down their electrochemical gradient while excluding others.",
+          "char_start": 88,
+          "char_end": 200
+        }
+      ]
+    },
+    {
+      "target_mechanism": {
+        "id": "mu_01J9B002",
+        "paper_id": "W2100011002",
+        "domain": "biology",
+        "subject": {
+          "concept_id": "c_regulatory_t_cell",
+          "surface": "调节性 T 细胞",
+          "type": "substance"
+        },
+        "action": {
+          "verb": "suppress",
+          "action_class": "inhibit",
+          "polarity": "inhibit"
+        },
+        "object": {
+          "concept_id": "c_immune_overreaction",
+          "surface": "过度免疫反应",
+          "type": "process"
+        },
+        "conditions": ["antigen_present"],
+        "result": "抑制效应 T 细胞对自身抗原的攻击，形成负反馈调控",
+        "signature": {
+          "subject_type": "substance",
+          "action_class": "inhibit",
+          "object_type": "process",
+          "causality": "feedback",
+          "polarity": "inhibit",
+          "condition_count": 1,
+          "condition_keys": ["antigen_present"],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Regulatory T cells suppress autoreactive effector T cells in an antigen-dependent manner, forming a negative feedback loop that limits immune overreaction.",
+          "section": "abstract",
+          "char_start": 60,
+          "char_end": 208
+        },
+        "confidence": 0.8,
+        "extractor_version": "ext-v1.0"
+      },
+      "target_domain": "biology",
+      "scores": {
+        "structural": 0.62,
+        "semantic": 0.48,
+        "domain_distance": 0.88,
+        "triviality": 0.1,
+        "final": 0.52
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_deposition_tip",
+          "target_role": "subject",
+          "target_concept_id": "c_regulatory_t_cell",
+          "reason": "两者都是负反馈回路中的抑制性执行者"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_dendrite_growth",
+          "target_role": "object",
+          "target_concept_id": "c_immune_overreaction",
+          "reason": "两者都是需要被限制的自放大过程"
+        }
+      ],
+      "transferable_hypothesis": "在电解液中引入对尖端曲率选择性吸附的抑制剂分子，模仿 Treg 的抗原依赖性抑制，使抑制强度随局部电流密度自动增强",
+      "differences": [
+        "Treg 的抑制具有抗原特异性与记忆性；电解液抑制剂无记忆，只能靠浓度维持",
+        "免疫抑制是细胞间接触介导；电化学抑制依赖扩散与吸附动力学，响应时间尺度差数个量级"
+      ],
+      "citations": [
+        {
+          "paper_id": "W2100011002",
+          "span": "Regulatory T cells suppress autoreactive effector T cells in an antigen-dependent manner.",
+          "char_start": 60,
+          "char_end": 141
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "latency_ms": 1830,
+    "candidates": 412,
+    "graph_version": "g-20261102-0",
+    "degraded": false,
+    "stub": true
+  }
+}

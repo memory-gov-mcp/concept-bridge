@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "EvalRow": {
+      "additionalProperties": false,
+      "description": "消融表的一行。",
+      "properties": {
+        "config": {
+          "minLength": 1,
+          "title": "Config",
+          "type": "string"
+        },
+        "mrr_at_10": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mrr At 10"
+        },
+        "p_at_5": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P At 5"
+        },
+        "use_domain_distance": {
+          "default": false,
+          "title": "Use Domain Distance",
+          "type": "boolean"
+        },
+        "use_rerank": {
+          "default": false,
+          "title": "Use Rerank",
+          "type": "boolean"
+        },
+        "use_structural": {
+          "default": false,
+          "title": "Use Structural",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "config"
+      ],
+      "title": "EvalRow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "case_study_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Case Study Ids",
+      "type": "array"
+    },
+    "generated_at": {
+      "minLength": 1,
+      "title": "Generated At",
+      "type": "string"
+    },
+    "gold_pairs": {
+      "minimum": 0,
+      "title": "Gold Pairs",
+      "type": "integer"
+    },
+    "hard_negatives": {
+      "minimum": 0,
+      "title": "Hard Negatives",
+      "type": "integer"
+    },
+    "kappa": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": -1.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Kappa"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/EvalRow"
+      },
+      "title": "Rows",
+      "type": "array"
+    }
+  },
+  "required": [
+    "generated_at",
+    "gold_pairs",
+    "hard_negatives"
+  ],
+  "title": "EvalReport",
+  "type": "object"
+}
