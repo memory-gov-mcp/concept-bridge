@@ -18,7 +18,7 @@ from ..common.schemas import (
 from ..graph.builder import build_graph
 from ..graph.store import GraphStore
 from .candidate import rank_candidates, select_sources
-from .explain import explain_bridge
+from .rerank import rerank_explanation
 
 log = get_logger(__name__)
 
@@ -64,7 +64,7 @@ def build_result(
     built = build_graph(sources)
     bridges = []
     for pair in ranked:
-        explained = explain_bridge(pair.source, pair.target)
+        explained = rerank_explanation(pair.source, pair.target)
         bridges.append(
             Bridge(
                 target_mechanism=pair.target,
