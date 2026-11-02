@@ -19,7 +19,7 @@
 
 ## 环境事实（已验证）
 
-- Windows，**没有 make** → 一律 `uv run task <cmd>`。
+- Windows 与 Linux 都用 `uv run task <cmd>`。有 GNU make 时 `make <cmd>` 等价。
 - `uv 0.11.16`；Python 3.11.15（uv 管理）；Node v24。
-- 系统 `python` 是 Windows Store 空壳别名，**用 `uv run python`**。
+- Windows 上系统 `python` 可能是 Store 空壳别名，用 `uv run python`。
 - 不要引入 torch / sentence-transformers，用 `fastembed`。
