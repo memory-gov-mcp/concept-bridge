@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T12:49:27Z",
+  "generated_at": "2026-11-02T15:32:28Z",
   "gold_pairs": 30,
   "hard_negatives": 10,
   "kappa": null,
@@ -9,38 +9,38 @@
       "use_structural": false,
       "use_domain_distance": false,
       "use_rerank": false,
-      "p_at_5": null,
-      "mrr_at_10": null
+      "p_at_5": 0.766667,
+      "mrr_at_10": 0.384762
     },
     {
       "config": "B +结构签名",
       "use_structural": true,
       "use_domain_distance": false,
       "use_rerank": false,
-      "p_at_5": null,
-      "mrr_at_10": null
+      "p_at_5": 1.0,
+      "mrr_at_10": 0.961111
     },
     {
       "config": "C +领域距离",
       "use_structural": true,
       "use_domain_distance": true,
       "use_rerank": false,
-      "p_at_5": null,
-      "mrr_at_10": null
+      "p_at_5": 1.0,
+      "mrr_at_10": 0.961111
     },
     {
       "config": "D 完整",
       "use_structural": true,
       "use_domain_distance": true,
       "use_rerank": true,
-      "p_at_5": null,
-      "mrr_at_10": null
+      "p_at_5": 1.0,
+      "mrr_at_10": 0.961111
     }
   ],
   "case_study_ids": [
-    "g01",
-    "g02",
-    "g03"
+    "g29",
+    "g29:trivial",
+    "n01"
   ],
-  "notes": "脚手架：指标待 P2-T5 用真实匹配结果填充"
+  "notes": "语料是金标准正例材料化成的机制闭集，不是 1500 篇文献库。P@5 是正确目标出现在前 5 名的查询占比；负例不进入命中集。闭集中目标全部跨 field，domain_dist 恒为 1，B 与 C 的排序相同。重排只在 LLM 缓存命中时改写文案，不改变分数，因此无缓存时 D 与 C 相同。"
 }
