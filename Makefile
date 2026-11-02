@@ -1,5 +1,5 @@
-# 可选别名层。本队机器没有 make，规范命令是 `uv run task <cmd>`。
-# 装了 make 的人可以用这些目标，行为完全一致。
+# 可选别名。规范命令是 `uv run task <cmd>`，Windows 与 Linux 相同。
+# 有 GNU make 时，这些目标与 task 命令一一对应。
 
 .PHONY: setup contract check e2e eval dev demo freeze
 

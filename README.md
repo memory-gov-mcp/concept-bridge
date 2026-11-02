@@ -13,13 +13,13 @@
 ## 30 秒跑起来
 
 ```bash
-uv sync --extra analyze --extra dev   # 装依赖
+uv sync --extra analyze             # 装依赖；dev 工具组由 uv sync 默认安装
 uv run task contract                  # 生成 contracts/
 uv run task check                     # 必须绿
 uv run task dev                       # http://127.0.0.1:8000/docs
 ```
 
-没有 `make`（本队全是 Windows），一切命令都走 `uv run task <cmd>`。
+Windows 与 Linux 都用 `uv run task <cmd>`。装了 GNU make 时，`make <cmd>` 与之等价。CI 在 Ubuntu 和 Windows 上跑 `check` 与 `e2e`。
 
 | 命令 | 作用 |
 |---|---|
