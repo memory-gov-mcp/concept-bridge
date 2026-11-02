@@ -1,12 +1,18 @@
-# 评测报告（脚手架）
+# 评测报告
 
-- 生成时间：2026-11-02T12:49:27Z
-- 正例：30 ｜ 负例：10 ｜ 分组分布：{'G1': 16, 'G2': 14}
-- 指标：待填（P2-T5）
+- 生成时间：2026-11-02T15:32:28Z
+- 正例：30 ｜ 负例：10
+- 说明：语料是金标准正例材料化成的机制闭集，不是 1500 篇文献库。P@5 是正确目标出现在前 5 名的查询占比；负例不进入命中集。闭集中目标全部跨 field，domain_dist 恒为 1，B 与 C 的排序相同。重排只在 LLM 缓存命中时改写文案，不改变分数，因此无缓存时 D 与 C 相同。
 
 | 配置 | struct | domain | rerank | P@5 | MRR@10 |
 |---|---|---|---|---|---|
-| A 纯语义(baseline) | False | False | False | - | - |
-| B +结构签名 | True | False | False | - | - |
-| C +领域距离 | True | True | False | - | - |
-| D 完整 | True | True | True | - | - |
+| A 纯语义(baseline) | False | False | False | 0.7667 | 0.3848 |
+| B +结构签名 | True | False | False | 1.0000 | 0.9611 |
+| C +领域距离 | True | True | False | 1.0000 | 0.9611 |
+| D 完整 | True | True | True | 1.0000 | 0.9611 |
+
+## Case studies
+
+- 高分正例 `g29`（超声换能器阻抗失配）：rank=1 structural=1.0000 semantic=0.4921 final=0.8476
+- 反琐碎 `g29:trivial`：把动词改成「促进」并清空条件后 triviality=1.0，final 从 0.8476 降到 0.3552
+- 负例 `n01`（generic_property）：triviality=1.0 final=0.4370。只共享吸收光子这一泛化属性；材料侧是带间跃迁直接产生自由载流子，生物侧是激子经色素网络传递，客体类型与因果链不同，无法迁移设计参数
