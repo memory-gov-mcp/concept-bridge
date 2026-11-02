@@ -5,6 +5,7 @@ from __future__ import annotations
 from conceptbridge.common.schemas import StructuralSignature
 from conceptbridge.match.config import FINAL_WEIGHTS, STRUCT_WEIGHTS, domain_distance
 from conceptbridge.match.structural import struct_sim
+from conceptbridge.match.triviality import final_score, triviality_penalty
 
 
 def test_struct_weights_match_spec() -> None:
@@ -49,6 +50,28 @@ def test_action_class_mismatch_drops_its_weight() -> None:
     left = _sig()
     right = _sig(action_class="inhibit")
     assert abs(struct_sim(left, right) - 0.75) < 1e-9
+
+
+def test_empty_conditions_are_trivial() -> None:
+    sig = _sig(condition_count=0, condition_keys=[])
+    assert triviality_penalty(sig, verb="selectively_transport") == 1.0
+
+
+def test_generic_surface_verb_is_trivial_but_promote_class_is_not() -> None:
+    sig = _sig(action_class="promote", polarity="promote")
+    assert triviality_penalty(sig, verb="促进") == 1.0
+    assert triviality_penalty(sig, verb="selectively_transport") == 0.0
+
+
+def test_near_duplicate_names_are_trivial() -> None:
+    sig = _sig()
+    assert triviality_penalty(sig, verb="transport", name_similarity=0.96) == 1.0
+    assert triviality_penalty(sig, verb="transport", name_similarity=0.95) == 0.0
+
+
+def test_final_score_clamps_to_unit_interval() -> None:
+    assert final_score(0.0, 0.0, 0.0, 1.0) == 0.0
+    assert final_score(1.0, 1.0, 1.0, 0.0) == 1.0
 
 
 def test_domain_distance_is_zero_only_inside_one_field() -> None:
