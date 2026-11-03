@@ -7,12 +7,50 @@ export interface BridgeRequest {
   debug?: boolean;
 }
 
+export interface ConceptRef {
+  concept_id: string;
+  surface: string;
+  type: string;
+}
+
+export interface Citation {
+  paper_id: string;
+  span: string;
+  char_start: number;
+  char_end: number;
+}
+
 export interface Mechanism {
   id: string;
-  subject: { surface: string };
-  action: { verb: string };
-  object: { surface: string };
+  paper_id: string;
+  domain: string;
+  subject: ConceptRef;
+  action: { verb: string; action_class: string };
+  object: ConceptRef;
+  conditions?: string[];
   result: string;
+  evidence: Omit<Citation, "paper_id"> & { section?: string };
+}
+
+export interface GraphNode { id: string; label: string; domain: string; type: string }
+export interface GraphEdge { id: string; source: string; target: string; action_class: string }
+
+export interface Alignment {
+  source_role: string;
+  source_concept_id: string;
+  target_role: string;
+  target_concept_id: string;
+  reason: string;
+}
+
+export interface Bridge {
+  target_mechanism: Mechanism;
+  target_domain: string;
+  scores: Record<"structural" | "semantic" | "domain_distance" | "triviality" | "final", number>;
+  alignment?: Alignment[];
+  transferable_hypothesis: string;
+  differences?: string[];
+  citations: Citation[];
 }
 
 export interface BridgeResult {
@@ -20,20 +58,9 @@ export interface BridgeResult {
   source: {
     domain: string;
     mechanisms?: Mechanism[];
-    subgraph?: {
-      nodes?: { id: string; label: string; domain: string; type: string }[];
-      edges?: { id: string; source: string; target: string; action_class: string }[];
-    };
+    subgraph?: { nodes?: GraphNode[]; edges?: GraphEdge[] };
   };
-  bridges?: {
-    target_mechanism: Mechanism;
-    target_domain: string;
-    scores: Record<"structural" | "semantic" | "domain_distance" | "triviality" | "final", number>;
-    alignment?: { reason: string }[];
-    transferable_hypothesis: string;
-    differences?: string[];
-    citations: { paper_id: string; span: string; char_start: number; char_end: number }[];
-  }[];
+  bridges?: Bridge[];
   meta: { latency_ms: number; candidates: number; graph_version: string; degraded?: boolean; stub?: boolean };
 }
 
