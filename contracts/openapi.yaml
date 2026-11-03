@@ -771,6 +771,29 @@ paths:
       summary: 跨域结构类比检索
       tags:
       - bridge
+  /api/v1/bridge/stream:
+    post:
+      operationId: stream_bridge_api_v1_bridge_stream_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BridgeRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            text/event-stream: {}
+          description: 'event: stage / result / done'
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: 跨域检索（SSE 渐进返回）
+      tags:
+      - bridge
   /api/v1/eval/report:
     get:
       operationId: get_eval_report_api_v1_eval_report_get

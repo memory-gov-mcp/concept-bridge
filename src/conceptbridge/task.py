@@ -1,6 +1,6 @@
 """仓库任务入口：uv run task <命令>。
 
-不用 make —— 本队四台机器都是 Windows，没有 make。
+Windows 与 Linux 都用这个入口。装了 GNU make 时，Makefile 只是转调这里。
 """
 
 from __future__ import annotations
@@ -65,7 +65,7 @@ def _has_eval() -> bool:
 
 def cmd_setup() -> int:
     uv = shutil.which("uv") or "uv"
-    code = _run([uv, "sync", "--extra", "analyze", "--extra", "dev"])
+    code = _run([uv, "sync", "--extra", "analyze"])
     if code != 0:
         return code
     if _has_web() and shutil.which("npm"):
