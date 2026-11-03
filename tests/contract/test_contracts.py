@@ -46,6 +46,7 @@ def test_openapi_covers_required_paths() -> None:
     required = {
         "/api/v1/health",
         "/api/v1/bridge",
+        "/api/v1/bridge/stream",
         "/api/v1/mechanisms/{mechanism_id}",
         "/api/v1/graph/subgraph",
         "/api/v1/eval/report",

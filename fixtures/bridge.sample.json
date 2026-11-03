@@ -145,7 +145,7 @@
         "semantic": 0.55,
         "domain_distance": 0.93,
         "triviality": 0.0,
-        "final": 0.68
+        "final": 0.72
       },
       "alignment": [
         {
@@ -224,7 +224,7 @@
         "semantic": 0.48,
         "domain_distance": 0.88,
         "triviality": 0.1,
-        "final": 0.52
+        "final": 0.61
       },
       "alignment": [
         {

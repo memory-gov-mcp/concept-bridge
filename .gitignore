@@ -2,10 +2,14 @@
 data/
 .env
 .env.*
+.env.local
 !.env.example
 
 # Python
 .venv/
+.uv-cache/
+.uv-python/
+pytest-cache-files-*/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -17,9 +21,16 @@ htmlcov/
 # 前端
 node_modules/
 web/dist/
+web/.vite/
+
+# 评测报告是生成物：每人在本地跑 uv run task eval 生成，不入库
+eval/reports/*.json
+eval/reports/*.md
 
 # 编辑器与系统
 .idea/
 .vscode/
 *.swp
 .DS_Store
+Thumbs.db
+*.log
