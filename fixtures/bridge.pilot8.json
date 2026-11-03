@@ -1,0 +1,686 @@
+{
+  "query": "锂枝晶抑制",
+  "source": {
+    "domain": "materials_science",
+    "mechanisms": [
+      {
+        "id": "mu_be9b3af8f0ab3220f894f589",
+        "paper_id": "W2884553835",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_67003ad93040b059c3acfe7a",
+          "surface": "electronically conducting, but ion-blocking barriers",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "regulate",
+          "action_class": "regulate",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_59e94d5c96af57894cd467d2",
+          "surface": "chemical potential",
+          "type": "state"
+        },
+        "conditions": [
+          "high_electric_current",
+          "large_temperature_gradient"
+        ],
+        "result": "论文提出利用导电子、阻离子屏障重置混合导体化学势，使其保持在分解阈值以下。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "regulate",
+          "object_type": "state",
+          "causality": "threshold",
+          "polarity": "neutral",
+          "condition_count": 2,
+          "condition_keys": [
+            "high_electric_current",
+            "large_temperature_gradient"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Then, a strategy for stable use is proposed: constructing a series of electronically conducting, but ion-blocking barriers to reset the chemical potential of such conductors to keep it below the threshold for decomposition, even if it is used with high electric currents and/or large temperature differences.",
+          "section": "abstract",
+          "char_start": 519,
+          "char_end": 827
+        },
+        "confidence": 0.9,
+        "extractor_version": "curated-codex-v1"
+      },
+      {
+        "id": "mu_22645c8fb4925a1c5bca9325",
+        "paper_id": "W3153585982",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_ca9be22f3bcc8d3951e7c1c0",
+          "surface": "lithiated COF channels",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_8d74ad391733e4b789fec95f",
+          "surface": "Li ions",
+          "type": "substance"
+        },
+        "conditions": [
+          "lithiation",
+          "lithium_metal_battery"
+        ],
+        "result": "锂化 COF 通道作为快速锂离子输运层，使锂离子精确成核，并支持无枝晶、快充负极。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "substance",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 2,
+          "condition_keys": [
+            "lithiation",
+            "lithium_metal_battery"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "When used as lithium hosts in Li metal batteries, lithium storage and charge transport are significantly improved. Both spectroelectrochemical and theoretical analyses demonstrate that lithiated COF channels are important as fast Li+ transport layers, by which Li ions can be precisely nucleated. This affords dendrite‐free and fast‐charging anodes, which would be difficult to achieve using individual components.",
+          "section": "abstract",
+          "char_start": 707,
+          "char_end": 1121
+        },
+        "confidence": 0.9,
+        "extractor_version": "curated-codex-v1"
+      },
+      {
+        "id": "mu_be8df0da90d071d3884e41e3",
+        "paper_id": "W2884553835",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_67003ad93040b059c3acfe7a",
+          "surface": "electronically conducting, but ion-blocking barriers",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "inhibit",
+          "action_class": "inhibit",
+          "polarity": "inhibit"
+        },
+        "object": {
+          "concept_id": "c_8a401e0ceea7674da9909c09",
+          "surface": "decomposition",
+          "type": "process"
+        },
+        "conditions": [
+          "high_electric_current",
+          "large_temperature_gradient"
+        ],
+        "result": "提出的屏障策略通过将化学势维持在阈值以下，抑制高电流或大温差条件下的导体分解。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "inhibit",
+          "object_type": "process",
+          "causality": "mediated",
+          "polarity": "inhibit",
+          "condition_count": 2,
+          "condition_keys": [
+            "high_electric_current",
+            "large_temperature_gradient"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Then, a strategy for stable use is proposed: constructing a series of electronically conducting, but ion-blocking barriers to reset the chemical potential of such conductors to keep it below the threshold for decomposition, even if it is used with high electric currents and/or large temperature differences.",
+          "section": "abstract",
+          "char_start": 519,
+          "char_end": 827
+        },
+        "confidence": 0.87,
+        "extractor_version": "curated-codex-v1"
+      },
+      {
+        "id": "mu_599d3ad6cdcd495fc280a074",
+        "paper_id": "W3153585982",
+        "domain": "materials_science",
+        "subject": {
+          "concept_id": "c_e9aca1e5578f11ec6454f65c",
+          "surface": "MXene@COF heterostructure",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "promote",
+          "action_class": "promote",
+          "polarity": "promote"
+        },
+        "object": {
+          "concept_id": "c_26e51548a036e96deee9bef4",
+          "surface": "charge transport",
+          "type": "process"
+        },
+        "conditions": [
+          "lithium_metal_battery"
+        ],
+        "result": "MXene@COF 异质结构用作锂金属电池的锂宿主时，锂存储和电荷输运得到改善。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "promote",
+          "object_type": "process",
+          "causality": "direct",
+          "polarity": "promote",
+          "condition_count": 1,
+          "condition_keys": [
+            "lithium_metal_battery"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Unlike most COFs, which are generally produced as solid powders, ultrathin 2D COF‐LZU1 grows in situ on aminated Ti3C2Tx nanosheets with covalent bonding, producing a robust MXene@COF heterostructure with high crystallinity, hierarchical porosity, and conductive frameworks. When used as lithium hosts in Li metal batteries, lithium storage and charge transport are significantly improved.",
+          "section": "abstract",
+          "char_start": 432,
+          "char_end": 821
+        },
+        "confidence": 0.88,
+        "extractor_version": "curated-codex-v1"
+      }
+    ],
+    "subgraph": {
+      "nodes": [
+        {
+          "id": "c_67003ad93040b059c3acfe7a",
+          "label": "electronically conducting, but ion-blocking barriers",
+          "domain": "materials_science",
+          "type": "structure"
+        },
+        {
+          "id": "c_59e94d5c96af57894cd467d2",
+          "label": "chemical potential",
+          "domain": "materials_science",
+          "type": "state"
+        },
+        {
+          "id": "c_ca9be22f3bcc8d3951e7c1c0",
+          "label": "lithiated COF channels",
+          "domain": "materials_science",
+          "type": "structure"
+        },
+        {
+          "id": "c_8d74ad391733e4b789fec95f",
+          "label": "Li ions",
+          "domain": "materials_science",
+          "type": "substance"
+        },
+        {
+          "id": "c_8a401e0ceea7674da9909c09",
+          "label": "decomposition",
+          "domain": "materials_science",
+          "type": "process"
+        },
+        {
+          "id": "c_e9aca1e5578f11ec6454f65c",
+          "label": "MXene@COF heterostructure",
+          "domain": "materials_science",
+          "type": "structure"
+        },
+        {
+          "id": "c_26e51548a036e96deee9bef4",
+          "label": "charge transport",
+          "domain": "materials_science",
+          "type": "process"
+        }
+      ],
+      "edges": [
+        {
+          "id": "mu_be9b3af8f0ab3220f894f589",
+          "source": "c_67003ad93040b059c3acfe7a",
+          "target": "c_59e94d5c96af57894cd467d2",
+          "action_class": "regulate"
+        },
+        {
+          "id": "mu_22645c8fb4925a1c5bca9325",
+          "source": "c_ca9be22f3bcc8d3951e7c1c0",
+          "target": "c_8d74ad391733e4b789fec95f",
+          "action_class": "transport"
+        },
+        {
+          "id": "mu_be8df0da90d071d3884e41e3",
+          "source": "c_67003ad93040b059c3acfe7a",
+          "target": "c_8a401e0ceea7674da9909c09",
+          "action_class": "inhibit"
+        },
+        {
+          "id": "mu_599d3ad6cdcd495fc280a074",
+          "source": "c_e9aca1e5578f11ec6454f65c",
+          "target": "c_26e51548a036e96deee9bef4",
+          "action_class": "promote"
+        }
+      ]
+    }
+  },
+  "bridges": [
+    {
+      "target_mechanism": {
+        "id": "mu_41d7f680a333ac051e806a57",
+        "paper_id": "W137033505",
+        "domain": "biology",
+        "subject": {
+          "concept_id": "c_44fb16ccaacae2b1b44626e1",
+          "surface": "voltage-gated Ca2þ channels",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_73d7f747518a23359fc1fbab",
+          "surface": "Ca2þ",
+          "type": "substance"
+        },
+        "conditions": [
+          "membrane_depolarization"
+        ],
+        "result": "去极化开放的钙通道允许钙进入细胞，进而启动细胞收缩。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "substance",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 1,
+          "condition_keys": [
+            "membrane_depolarization"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Indeed, it is widely recognized that Kþ-induced depolarization causes the opening of voltage-gated Ca2þ channels in the SMC plasma membrane, through which Ca2þ enters the cell to initiate contraction.",
+          "section": "abstract",
+          "char_start": 915,
+          "char_end": 1115
+        },
+        "confidence": 0.92,
+        "extractor_version": "curated-codex-v1"
+      },
+      "target_domain": "biology",
+      "scores": {
+        "structural": 0.85,
+        "semantic": 0.3239639401435852,
+        "domain_distance": 1.0,
+        "triviality": 0.0,
+        "final": 0.7296891820430755
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_ca9be22f3bcc8d3951e7c1c0",
+          "target_role": "subject",
+          "target_concept_id": "c_44fb16ccaacae2b1b44626e1",
+          "reason": "主体角色对应，类型 structure 对 structure"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_8d74ad391733e4b789fec95f",
+          "target_role": "object",
+          "target_concept_id": "c_73d7f747518a23359fc1fbab",
+          "reason": "客体角色对应，类型 substance 对 substance"
+        }
+      ],
+      "transferable_hypothesis": "沿用voltage-gated Ca2þ channels的transport结构，把lithiated COF channels对Li ions的transport迁到biology：去极化开放的钙通道允许钙进入细胞，进而启动细胞收缩。",
+      "differences": [
+        "源域条件是 lithiation, lithium_metal_battery，目标域条件是 membrane_depolarization",
+        "源域结果侧重「锂化 COF 通道作为快速锂离子输运层，使锂离子精确成核，并支持无枝晶、快充负极。」，目标域结果侧重「去极化开放的钙通道允许钙进入细胞，进而启动细胞收缩。」"
+      ],
+      "citations": [
+        {
+          "paper_id": "W137033505",
+          "span": "Indeed, it is widely recognized that Kþ-induced depolarization causes the opening of voltage-gated Ca2þ channels in the SMC plasma membrane, through which Ca2þ enters the cell to initiate contraction.",
+          "char_start": 915,
+          "char_end": 1115
+        }
+      ]
+    },
+    {
+      "target_mechanism": {
+        "id": "mu_1bbefe5ee3f5972df515bbaf",
+        "paper_id": "W120195886",
+        "domain": "chemistry",
+        "subject": {
+          "concept_id": "c_24efe06fb01572d8de4bb0b5",
+          "surface": "transmembrane channels",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_46f7712be7b255b67f092e93",
+          "surface": "sodium ions",
+          "type": "substance"
+        },
+        "conditions": [
+          "planar_bilayer"
+        ],
+        "result": "杯芳烃衍生物形成跨膜通道，允许钠离子通过，并对更大的钾离子表现出排斥。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "substance",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 1,
+          "condition_keys": [
+            "planar_bilayer"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "The ion transporting ability of these, and other bilayer-spanning O-substituted calixarene derivatives, was determined by planar bilayer electrophysiological methods. Results showed that this modular approach to artificial ion channel construction was successful; calixarene derivatives formed transmembrane channels that allowed sodium ions to pass through but not the larger potassium ions.",
+          "section": "abstract",
+          "char_start": 1209,
+          "char_end": 1601
+        },
+        "confidence": 0.92,
+        "extractor_version": "curated-codex-v1"
+      },
+      "target_domain": "chemistry",
+      "scores": {
+        "structural": 0.85,
+        "semantic": 0.22428274154663086,
+        "domain_distance": 1.0,
+        "triviality": 0.0,
+        "final": 0.6997848224639893
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_ca9be22f3bcc8d3951e7c1c0",
+          "target_role": "subject",
+          "target_concept_id": "c_24efe06fb01572d8de4bb0b5",
+          "reason": "主体角色对应，类型 structure 对 structure"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_8d74ad391733e4b789fec95f",
+          "target_role": "object",
+          "target_concept_id": "c_46f7712be7b255b67f092e93",
+          "reason": "客体角色对应，类型 substance 对 substance"
+        }
+      ],
+      "transferable_hypothesis": "沿用transmembrane channels的transport结构，把lithiated COF channels对Li ions的transport迁到chemistry：杯芳烃衍生物形成跨膜通道，允许钠离子通过，并对更大的钾离子表现出排斥。",
+      "differences": [
+        "源域条件是 lithiation, lithium_metal_battery，目标域条件是 planar_bilayer",
+        "源域结果侧重「锂化 COF 通道作为快速锂离子输运层，使锂离子精确成核，并支持无枝晶、快充负极。」，目标域结果侧重「杯芳烃衍生物形成跨膜通道，允许钠离子通过，并对更大的钾离子表现出排斥。」"
+      ],
+      "citations": [
+        {
+          "paper_id": "W120195886",
+          "span": "The ion transporting ability of these, and other bilayer-spanning O-substituted calixarene derivatives, was determined by planar bilayer electrophysiological methods. Results showed that this modular approach to artificial ion channel construction was successful; calixarene derivatives formed transmembrane channels that allowed sodium ions to pass through but not the larger potassium ions.",
+          "char_start": 1209,
+          "char_end": 1601
+        }
+      ]
+    },
+    {
+      "target_mechanism": {
+        "id": "mu_40a8cdd7e46887019f7da16d",
+        "paper_id": "W1980558682",
+        "domain": "biology",
+        "subject": {
+          "concept_id": "c_cccf764743f2638185900c5e",
+          "surface": "mechanosensitive channels",
+          "type": "structure"
+        },
+        "action": {
+          "verb": "transport",
+          "action_class": "transport",
+          "polarity": "neutral"
+        },
+        "object": {
+          "concept_id": "c_12e5e6d2f5b07e64765e8fe5",
+          "surface": "cations and anions",
+          "type": "substance"
+        },
+        "conditions": [
+          "membrane_stretch"
+        ],
+        "result": "受膜拉伸激活的机械敏感通道能够同时通透阳离子和阴离子；其膨压调节作用在原文中表述为可能性。",
+        "signature": {
+          "subject_type": "structure",
+          "action_class": "transport",
+          "object_type": "substance",
+          "causality": "direct",
+          "polarity": "neutral",
+          "condition_count": 1,
+          "condition_keys": [
+            "membrane_stretch"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "In electrophysiological studies of ion channels in the plasma membrane of the yeast Saccharomyces cerevisiae, channels were observed that were activated by, and adapted to, stretching of the membrane. Adaptation of channel activity to mechanical stimuli was voltage-dependent. Because these mechanosensitive channels pass both cations and anions, they may play a role in turgor regulation in this walled organism.",
+          "section": "abstract",
+          "char_start": 211,
+          "char_end": 624
+        },
+        "confidence": 0.9,
+        "extractor_version": "curated-codex-v1"
+      },
+      "target_domain": "biology",
+      "scores": {
+        "structural": 0.85,
+        "semantic": 0.08162839710712433,
+        "domain_distance": 1.0,
+        "triviality": 0.0,
+        "final": 0.6569885191321373
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_ca9be22f3bcc8d3951e7c1c0",
+          "target_role": "subject",
+          "target_concept_id": "c_cccf764743f2638185900c5e",
+          "reason": "主体角色对应，类型 structure 对 structure"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_8d74ad391733e4b789fec95f",
+          "target_role": "object",
+          "target_concept_id": "c_12e5e6d2f5b07e64765e8fe5",
+          "reason": "客体角色对应，类型 substance 对 substance"
+        }
+      ],
+      "transferable_hypothesis": "沿用mechanosensitive channels的transport结构，把lithiated COF channels对Li ions的transport迁到biology：受膜拉伸激活的机械敏感通道能够同时通透阳离子和阴离子；其膨压调节作用在原文中表述为可能性。",
+      "differences": [
+        "源域条件是 lithiation, lithium_metal_battery，目标域条件是 membrane_stretch",
+        "源域结果侧重「锂化 COF 通道作为快速锂离子输运层，使锂离子精确成核，并支持无枝晶、快充负极。」，目标域结果侧重「受膜拉伸激活的机械敏感通道能够同时通透阳离子和阴离子；其膨压调节作用在原文中表述为可能性。」"
+      ],
+      "citations": [
+        {
+          "paper_id": "W1980558682",
+          "span": "In electrophysiological studies of ion channels in the plasma membrane of the yeast Saccharomyces cerevisiae, channels were observed that were activated by, and adapted to, stretching of the membrane. Adaptation of channel activity to mechanical stimuli was voltage-dependent. Because these mechanosensitive channels pass both cations and anions, they may play a role in turgor regulation in this walled organism.",
+          "char_start": 211,
+          "char_end": 624
+        }
+      ]
+    },
+    {
+      "target_mechanism": {
+        "id": "mu_50bb41ad77b0fe8672dfab5b",
+        "paper_id": "W137033505",
+        "domain": "biology",
+        "subject": {
+          "concept_id": "c_70f863ce2f96af3fa05c48de",
+          "surface": "constant negative potential",
+          "type": "state"
+        },
+        "action": {
+          "verb": "inhibit",
+          "action_class": "inhibit",
+          "polarity": "inhibit"
+        },
+        "object": {
+          "concept_id": "c_68ae655c6ee17f1504b85f7e",
+          "surface": "cell contraction",
+          "type": "process"
+        },
+        "conditions": [
+          "negative_membrane_potential"
+        ],
+        "result": "持续的负膜电位有助于将胞内钙维持在低水平，并抑制肺动脉平滑肌细胞收缩。",
+        "signature": {
+          "subject_type": "state",
+          "action_class": "inhibit",
+          "object_type": "process",
+          "causality": "mediated",
+          "polarity": "inhibit",
+          "condition_count": 1,
+          "condition_keys": [
+            "negative_membrane_potential"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "The maintenance of a constant negative potential across the plasma membrane of pulmonary artery SMCs therefore helps to maintain [Ca2þ]i at a low level and inhibits cell contraction.",
+          "section": "abstract",
+          "char_start": 1676,
+          "char_end": 1858
+        },
+        "confidence": 0.9,
+        "extractor_version": "curated-codex-v1"
+      },
+      "target_domain": "biology",
+      "scores": {
+        "structural": 0.55,
+        "semantic": 0.3440623879432678,
+        "domain_distance": 1.0,
+        "triviality": 0.0,
+        "final": 0.6007187163829804
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_67003ad93040b059c3acfe7a",
+          "target_role": "subject",
+          "target_concept_id": "c_70f863ce2f96af3fa05c48de",
+          "reason": "主体角色对应，类型 structure 对 state"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_8a401e0ceea7674da9909c09",
+          "target_role": "object",
+          "target_concept_id": "c_68ae655c6ee17f1504b85f7e",
+          "reason": "客体角色对应，类型 process 对 process"
+        }
+      ],
+      "transferable_hypothesis": "沿用constant negative potential的inhibit结构，把electronically conducting, but ion-blocking barriers对decomposition的inhibit迁到biology：持续的负膜电位有助于将胞内钙维持在低水平，并抑制肺动脉平滑肌细胞收缩。",
+      "differences": [
+        "源域条件是 high_electric_current, large_temperature_gradient，目标域条件是 negative_membrane_potential",
+        "源域结果侧重「提出的屏障策略通过将化学势维持在阈值以下，抑制高电流或大温差条件下的导体分解。」，目标域结果侧重「持续的负膜电位有助于将胞内钙维持在低水平，并抑制肺动脉平滑肌细胞收缩。」"
+      ],
+      "citations": [
+        {
+          "paper_id": "W137033505",
+          "span": "The maintenance of a constant negative potential across the plasma membrane of pulmonary artery SMCs therefore helps to maintain [Ca2þ]i at a low level and inhibits cell contraction.",
+          "char_start": 1676,
+          "char_end": 1858
+        }
+      ]
+    },
+    {
+      "target_mechanism": {
+        "id": "mu_5cb4f44692a9786debf7fd83",
+        "paper_id": "W117029714",
+        "domain": "computer_science",
+        "subject": {
+          "concept_id": "c_0bc74ba8dcef6e3791de5b70",
+          "surface": "random evaluation, reliability value update and self-adaptive threshold strategies",
+          "type": "process"
+        },
+        "action": {
+          "verb": "promote",
+          "action_class": "promote",
+          "polarity": "promote"
+        },
+        "object": {
+          "concept_id": "c_62278cff03ea6ac83927f913",
+          "surface": "performance of the algorithm",
+          "type": "state"
+        },
+        "conditions": [
+          "fast_particle_swarm_optimization"
+        ],
+        "result": "在快速粒子群优化中，联合采用随机评价、可靠性值更新和自适应阈值策略进一步改善算法表现。",
+        "signature": {
+          "subject_type": "process",
+          "action_class": "promote",
+          "object_type": "state",
+          "causality": "direct",
+          "polarity": "promote",
+          "condition_count": 1,
+          "condition_keys": [
+            "fast_particle_swarm_optimization"
+          ],
+          "arity": 2
+        },
+        "evidence": {
+          "span": "Moreover, applying random evaluation, reliability value update and self-adaptive threshold strategies to the FPSO further enhances the performance of the algorithm.",
+          "section": "abstract",
+          "char_start": 589,
+          "char_end": 753
+        },
+        "confidence": 0.88,
+        "extractor_version": "curated-codex-v1"
+      },
+      "target_domain": "computer_science",
+      "scores": {
+        "structural": 0.55,
+        "semantic": 0.3084263503551483,
+        "domain_distance": 1.0,
+        "triviality": 0.0,
+        "final": 0.5900279051065445
+      },
+      "alignment": [
+        {
+          "source_role": "subject",
+          "source_concept_id": "c_e9aca1e5578f11ec6454f65c",
+          "target_role": "subject",
+          "target_concept_id": "c_0bc74ba8dcef6e3791de5b70",
+          "reason": "主体角色对应，类型 structure 对 process"
+        },
+        {
+          "source_role": "object",
+          "source_concept_id": "c_26e51548a036e96deee9bef4",
+          "target_role": "object",
+          "target_concept_id": "c_62278cff03ea6ac83927f913",
+          "reason": "客体角色对应，类型 process 对 state"
+        }
+      ],
+      "transferable_hypothesis": "沿用random evaluation, reliability value update and self-adaptive threshold strategies的promote结构，把MXene@COF heterostructure对charge transport的promote迁到computer_science：在快速粒子群优化中，联合采用随机评价、可靠性值更新和自适应阈值策略进一步改善算法表现。",
+      "differences": [
+        "源域条件是 lithium_metal_battery，目标域条件是 fast_particle_swarm_optimization",
+        "源域结果侧重「MXene@COF 异质结构用作锂金属电池的锂宿主时，锂存储和电荷输运得到改善。」，目标域结果侧重「在快速粒子群优化中，联合采用随机评价、可靠性值更新和自适应阈值策略进一步改善算法表现。」"
+      ],
+      "citations": [
+        {
+          "paper_id": "W117029714",
+          "span": "Moreover, applying random evaluation, reliability value update and self-adaptive threshold strategies to the FPSO further enhances the performance of the algorithm.",
+          "char_start": 589,
+          "char_end": 753
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "latency_ms": 63,
+    "candidates": 52,
+    "graph_version": "run-eea6e466dc8e43b6",
+    "degraded": false,
+    "stub": false
+  }
+}
