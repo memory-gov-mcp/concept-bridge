@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -94,6 +95,56 @@ def mean_reciprocal_rank(ranks: list[int], *, cutoff: int) -> float:
         return 0.0
     total = sum(1.0 / rank for rank in ranks if rank <= cutoff)
     return total / len(ranks)
+
+
+@dataclass(frozen=True)
+class NegativeRates:
+    """负例分数不低于同配置正例最低分，即记一次误报。"""
+
+    count: int
+    without_triviality: float
+    full: float
+
+    @property
+    def drop(self) -> float:
+        return self.without_triviality - self.full
+
+
+def _configured_score(source: MechanismUnit, target: MechanismUnit, *, use_triviality: bool) -> float:
+    scored = score_pair(source, target)
+    return final_score(
+        scored.structural,
+        scored.semantic,
+        scored.domain_distance,
+        scored.triviality if use_triviality else 0.0,
+    )
+
+
+def hard_negative_rates(rows: list[dict] | None = None) -> NegativeRates:
+    """10 条负例都跨 field，领域距离与正例相同。下降来自反琐碎，不来自领域项。"""
+    gold = rows if rows is not None else load_gold()
+    positives = [row for row in gold if str(row.get("id", "")).startswith("g")]
+    negatives = [row for row in gold if str(row.get("id", "")).startswith("n")]
+    positive_pairs = [(materialize(row, "source"), materialize(row, "target")) for row in positives]
+    negative_pairs = [
+        (materialize_negative(row, "source"), materialize_negative(row, "target")) for row in negatives
+    ]
+
+    def rate(use_triviality: bool) -> float:
+        if not negative_pairs or not positive_pairs:
+            return 0.0
+        floor = min(
+            _configured_score(source, target, use_triviality=use_triviality)
+            for source, target in positive_pairs
+        )
+        flagged = sum(
+            1
+            for source, target in negative_pairs
+            if _configured_score(source, target, use_triviality=use_triviality) >= floor
+        )
+        return flagged / len(negative_pairs)
+
+    return NegativeRates(len(negatives), rate(False), rate(True))
 
 
 def load_gold(path: Path = GOLD_PATH) -> list[dict]:
@@ -264,6 +315,13 @@ def build_report(rows: list[dict] | None = None) -> dict:
         notes.append("闭集中目标全部跨 field，domain_dist 恒为 1，B 与 C 的排序相同。")
     if c_row["p_at_5"] == d_row["p_at_5"] and c_row["mrr_at_10"] == d_row["mrr_at_10"]:
         notes.append("重排只在 LLM 缓存命中时改写文案，不改变分数，因此无缓存时 D 与 C 相同。")
+    rates = hard_negative_rates(gold)
+    notes.append(
+        "10 条负例都跨 field，domain_dist 与正例同为 1，领域项分不开它们。"
+        f"关掉反琐碎时误报率 {rates.without_triviality:.4f}，"
+        f"完整公式误报率 {rates.full:.4f}，下降 {rates.drop:.4f}。"
+        "误报指负例分数不低于同配置下正例对的最低分。"
+    )
 
     case_ids = [str(success_row["id"]), f"{success_row['id']}:trivial", str(negative["id"]) if negative else "n/a"]
     return {
