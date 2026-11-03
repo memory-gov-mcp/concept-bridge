@@ -19,7 +19,7 @@ def digest(value: Any) -> str:
 def write_text(path: Path, body: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(body, encoding="utf-8")
+    temporary.write_text(body, encoding="utf-8", newline="\n")
     temporary.replace(path)
 
 

@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 from conceptbridge.common.config import fixture_path
@@ -31,6 +32,8 @@ def test_real_pilot_papers_mechanisms_and_evidence():
     drafts = json.loads(fixture_path("pilot8.drafts.json").read_text(encoding="utf-8"))
     assert manifest["extraction"]["draft_sha256"] == digest(drafts)
     assert manifest["extraction"]["external_model_api_calls"] == 0
+    for name, expected in manifest["files"].items():
+        assert hashlib.sha256(fixture_path(name).read_bytes()).hexdigest() == expected
     loaded = GraphStore.load(fixture_path("graph.min")).all_mechanisms()
     assert {unit.id for unit in loaded} == {unit.id for unit in units}
 
