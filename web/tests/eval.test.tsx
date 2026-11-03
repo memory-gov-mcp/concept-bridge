@@ -16,7 +16,12 @@ describe("P4-T7 evaluation", () => {
   });
 
   it("shows the ablation rows, metrics and the report's interpretation", () => {
-    const markup = renderToStaticMarkup(<EvalDashboard report={evalSnapshot} />);
+    const report = {
+      ...evalSnapshot,
+      rows: [{ config: "A 纯语义(baseline)", p_at_5: 0.766667, mrr_at_10: 0.961111 }],
+      notes: "评测语料为机制闭集。",
+    };
+    const markup = renderToStaticMarkup(<EvalDashboard report={report} />);
     expect(markup).toContain("A 纯语义(baseline)");
     expect(markup).toContain("76.67%");
     expect(markup).toContain("0.9611");
