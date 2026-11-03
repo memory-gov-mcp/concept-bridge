@@ -3,6 +3,8 @@ import type { BridgeRequest, BridgeResult, HealthResponse } from "../lib/api";
 import { evalSnapshot } from "../lib/evalSnapshot";
 import { sample, sampleQuery } from "./sample";
 
+const bridgeFields = new Set(["query", "source_domain", "top_k", "exclude_domains", "debug"]);
+
 function invalid(field: string) {
   return HttpResponse.json(
     { detail: [{ loc: ["body", field], msg: "Invalid value", type: "value_error" }] },
@@ -24,7 +26,11 @@ export const handlers = [
     if (typeof body?.query !== "string" || [...body.query].length < 2 || [...body.query].length > 200) {
       return invalid("query");
     }
-    const { query, top_k = 5, exclude_domains = [] } = body;
+    const unknownField = Object.keys(body).find((field) => !bridgeFields.has(field));
+    if (unknownField) return invalid(unknownField);
+    const { query, top_k = 5, exclude_domains = [], source_domain, debug } = body;
+    if (source_domain != null && typeof source_domain !== "string") return invalid("source_domain");
+    if (debug !== undefined && typeof debug !== "boolean") return invalid("debug");
     if (!Number.isInteger(top_k) || top_k < 1 || top_k > 20) return invalid("top_k");
     if (!Array.isArray(exclude_domains) || exclude_domains.some((domain) => typeof domain !== "string")) {
       return invalid("exclude_domains");

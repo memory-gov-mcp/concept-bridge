@@ -108,7 +108,72 @@ export function queryError(query: string) {
   return "";
 }
 
-async function request<T>(path: string, base: string, init?: RequestInit): Promise<T> {
+type JsonObject = Record<string, unknown>;
+
+function record(value: unknown): JsonObject | undefined {
+  return typeof value === "object" && value !== null && !Array.isArray(value) ? value as JsonObject : undefined;
+}
+
+function strings(value: unknown, ...keys: string[]) {
+  const object = record(value);
+  return !!object && keys.every((key) => typeof object[key] === "string");
+}
+
+function optionalList(value: unknown, valid: (item: unknown) => boolean) {
+  return value === undefined || (Array.isArray(value) && value.every(valid));
+}
+
+// Check fields the UI reads before handing the response to React and Cytoscape.
+function mechanism(value: unknown) {
+  const item = record(value);
+  return !!item && strings(item, "id", "domain", "result")
+    && strings(item.subject, "concept_id", "surface", "type")
+    && strings(item.object, "concept_id", "surface", "type")
+    && strings(item.action, "verb", "action_class");
+}
+
+function bridgeItem(value: unknown) {
+  const item = record(value);
+  const scores = record(item?.scores);
+  return !!item && !!scores && mechanism(item.target_mechanism)
+    && strings(item, "target_domain", "transferable_hypothesis")
+    && ["structural", "semantic", "domain_distance", "triviality", "final"].every((key) => Number.isFinite(scores[key]))
+    && Array.isArray(item.citations) && item.citations.length > 0 && item.citations.every((value: unknown) => {
+      const citation = record(value);
+      return !!citation && strings(citation, "paper_id", "span")
+        && Number.isInteger(citation.char_start) && Number.isInteger(citation.char_end);
+    })
+    && optionalList(item.differences, (entry) => typeof entry === "string")
+    && optionalList(item.alignment, (entry) => strings(entry, "source_concept_id", "target_concept_id", "reason"));
+}
+
+function bridgePayload(body: JsonObject) {
+  const source = record(body.source);
+  const graph = record(source?.subgraph);
+  const meta = record(body.meta);
+  return typeof body.query === "string" && !!source && typeof source.domain === "string"
+    && optionalList(source.mechanisms, mechanism)
+    && (source.subgraph === undefined || (!!graph
+      && optionalList(graph.nodes, (entry) => strings(entry, "id", "label", "domain", "type"))
+      && optionalList(graph.edges, (entry) => strings(entry, "id", "source", "target", "action_class"))))
+    && !!meta && typeof meta.graph_version === "string" && Number.isFinite(meta.latency_ms)
+    && optionalList(body.bridges, bridgeItem);
+}
+
+function evalPayload(body: JsonObject) {
+  return typeof body.generated_at === "string" && Number.isInteger(body.gold_pairs) && Number.isInteger(body.hard_negatives)
+    && (body.notes == null || typeof body.notes === "string")
+    && (body.kappa == null || Number.isFinite(body.kappa))
+    && optionalList(body.case_study_ids, (entry) => typeof entry === "string")
+    && optionalList(body.rows, (entry) => {
+      const row = record(entry);
+      return !!row && typeof row.config === "string"
+        && (row.p_at_5 == null || Number.isFinite(row.p_at_5))
+        && (row.mrr_at_10 == null || Number.isFinite(row.mrr_at_10));
+    });
+}
+
+async function request<T>(path: string, base: string, valid: (body: JsonObject) => boolean, init?: RequestInit): Promise<T> {
   const timeout = AbortSignal.timeout(15_000);
   const signal = init?.signal ? AbortSignal.any([init.signal, timeout]) : timeout;
   let response: Response;
@@ -118,18 +183,20 @@ async function request<T>(path: string, base: string, init?: RequestInit): Promi
     throw new Error(timeout.aborted ? errorMessages.UPSTREAM_TIMEOUT : "无法连接查询服务，请重试。");
   }
 
-  const body = await response.json().catch(() => null);
+  const body = record(await response.json().catch(() => null));
+  if (timeout.aborted) throw new Error(errorMessages.UPSTREAM_TIMEOUT);
   if (!response.ok) {
-    const code = body?.code ?? (response.status === 422 ? "BAD_REQUEST" : "INTERNAL");
-    const message = Object.hasOwn(errorMessages, code) ? errorMessages[code] : errorMessages.INTERNAL;
+    const statusCode = response.status === 504 ? "UPSTREAM_TIMEOUT" : response.status === 422 ? "BAD_REQUEST" : "INTERNAL";
+    const code = body?.code;
+    const message = typeof code === "string" && Object.hasOwn(errorMessages, code) ? errorMessages[code] : errorMessages[statusCode];
     throw new Error(message);
   }
-  if (!body) throw new Error("查询服务返回了无法读取的数据，请重试。");
+  if (!body || !valid(body)) throw new Error("查询服务返回了无法读取的数据，请重试。");
   return body as T;
 }
 
 export function bridge(body: BridgeRequest, base = "", signal?: AbortSignal) {
-  return request<BridgeResult>("/bridge", base, {
+  return request<BridgeResult>("/bridge", base, bridgePayload, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -138,9 +205,10 @@ export function bridge(body: BridgeRequest, base = "", signal?: AbortSignal) {
 }
 
 export function health(base = "") {
-  return request<HealthResponse>("/health", base);
+  return request<HealthResponse>("/health", base, (body) => (body.status === "ok" || body.status === "degraded")
+    && strings(body, "version", "graph_version") && typeof body.graph_ready === "boolean" && typeof body.demo_mode === "boolean");
 }
 
 export function evalReport(base = "", signal?: AbortSignal) {
-  return request<EvalReport>("/eval/report", base, { signal });
+  return request<EvalReport>("/eval/report", base, evalPayload, { signal });
 }
