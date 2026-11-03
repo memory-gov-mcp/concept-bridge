@@ -72,3 +72,10 @@ def test_domain_split_and_conservative_aliases():
 def test_confidence_cannot_disguise_duplicate_mechanisms(paper, draft):
     with pytest.raises(ValueError, match="duplicate"):
         validate_paper(paper, [draft, {**draft, "confidence": 0.9}])
+
+
+def test_curated_provenance_is_part_of_identity(paper, draft):
+    automated = validate_paper(paper, [draft])[0]
+    curated = validate_paper(paper, [draft], extractor_version="curated-codex-v1")[0]
+    assert curated.extractor_version == "curated-codex-v1"
+    assert curated.id != automated.id

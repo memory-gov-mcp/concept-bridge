@@ -118,6 +118,18 @@ def _export_locked(
             "paper_count": paper_count,
             "mechanism_count": mechanism_count,
             "embedding": "P2 hash_embed",
+            "extraction": {
+                key: manifest.get(key)
+                for key in (
+                    "model",
+                    "extractor_version",
+                    "method",
+                    "human_review_status",
+                    "draft_sha256",
+                    "selection",
+                    "external_model_api_calls",
+                )
+            },
             "files": file_hashes(staging),
         }
         write_json(staging / "p1.manifest.json", report)

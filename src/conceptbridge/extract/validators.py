@@ -37,7 +37,12 @@ class DraftMechanism(BaseModel):
     confidence: float = Field(ge=0, le=1)
 
 
-def validate_paper(paper: dict[str, Any], drafts: Any) -> list[MechanismUnit]:
+def validate_paper(
+    paper: dict[str, Any],
+    drafts: Any,
+    *,
+    extractor_version: str = EXTRACTOR_VERSION,
+) -> list[MechanismUnit]:
     if not isinstance(drafts, list) or not 1 <= len(drafts) <= 5:
         raise ValueError("each paper needs 1..5 evidence-supported mechanisms")
     units = []
@@ -83,7 +88,7 @@ def validate_paper(paper: dict[str, Any], drafts: Any) -> list[MechanismUnit]:
             },
             "evidence": {"span": span, "char_start": start, "char_end": end, "section": "abstract"},
             "confidence": draft.confidence,
-            "extractor_version": EXTRACTOR_VERSION,
+            "extractor_version": extractor_version,
         }
         identity_data = {key: value for key, value in data.items() if key != "confidence"}
         identity = json.dumps(

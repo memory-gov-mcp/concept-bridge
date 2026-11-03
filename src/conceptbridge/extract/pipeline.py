@@ -121,12 +121,28 @@ async def run(
             )
         if hashlib.sha256(source.read_bytes()).hexdigest() != input_hash:
             raise ValueError("paper source changed during extraction; cached tasks were preserved")
-        return _publish(root, input_hash, papers, results, extractor)
+        return publish_run(
+            root,
+            input_hash,
+            papers,
+            results,
+            extractor.identity,
+            extractor.stats,
+            extractor.gateway.stats,
+        )
     finally:
         lock.close()
 
 
-def _publish(root, input_hash, papers, results, extractor) -> dict[str, Any]:
+def publish_run(
+    root: Path,
+    input_hash: str,
+    papers: list[dict[str, Any]],
+    results: list[dict[str, Any]],
+    identity: dict[str, Any],
+    stats: dict[str, int],
+    gateway_stats: dict[str, int],
+) -> dict[str, Any]:
     units = [MechanismUnit.model_validate(item) for result in results for item in result["units"]]
     if len({unit.id for unit in units}) != len(units):
         raise ValueError("duplicate mechanism IDs across papers")
@@ -165,10 +181,10 @@ def _publish(root, input_hash, papers, results, extractor) -> dict[str, Any]:
             for row in random.Random(0).sample(rows, min(20, len(rows)))
         ],
     )
-    fresh = len(papers) - extractor.stats["task_cache_hits"]
+    fresh = len(papers) - stats["task_cache_hits"]
     manifest = {
         **provenance(),
-        **extractor.identity,
+        **identity,
         "run_id": run_id,
         "paper_count": len(papers),
         "successful_papers": len(papers) - len(failures),
@@ -176,14 +192,14 @@ def _publish(root, input_hash, papers, results, extractor) -> dict[str, Any]:
         "mechanism_count": len(units),
         "schema_pass_rate": (len(papers) - len(failures)) / len(papers),
         "schema_pass_rate_unit": "papers passing both schema and evidence validation",
-        "first_pass_rate": extractor.stats["first_pass_valid"] / fresh if fresh else None,
+        "first_pass_rate": stats["first_pass_valid"] / fresh if fresh else None,
         "human_accuracy": None,
         "human_review_status": "pending",
         "concepts_before": before,
         "concepts_after": len(rows),
         "input_sha256": input_hash,
         "selected_paper_ids": [p["paper_id"] for p in papers],
-        "usage": {**extractor.stats, **extractor.gateway.stats},
+        "usage": {**stats, **gateway_stats},
         "usage_note": "gateway_calls counts invocations, including failures; provider tokens/cost unavailable",
         "files": file_hashes(staging),
     }
