@@ -92,12 +92,11 @@ def cmd_check() -> int:
     for name, cmd in steps:
         if _run(cmd) != 0:
             failed.append(name)
-    if (
-        _has_web()
-        and shutil.which("npm")
-        and _run(["npm", "--prefix", "web", "run", "typecheck"]) != 0
-    ):
-        failed.append("web:typecheck")
+    # GitHub Actions checks the frontend in its own Node job.
+    if os.environ.get("GITHUB_ACTIONS") != "true" and _has_web():
+        npm = shutil.which("npm")
+        if npm and _run([npm, "--prefix", "web", "run", "typecheck"]) != 0:
+            failed.append("web:typecheck")
     if failed:
         print("\n[check] FAILED: " + ", ".join(failed))
         return 1
