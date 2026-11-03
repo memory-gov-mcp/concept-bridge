@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
-from conceptbridge.graph.embeddings import hash_embed
+from conceptbridge.graph.embeddings import embed_texts, hash_embed
 
 
 def test_hash_embed_is_deterministic_unit_vectors() -> None:
@@ -20,3 +21,22 @@ def test_hash_embed_is_deterministic_unit_vectors() -> None:
 def test_different_texts_are_not_identical() -> None:
     vectors = hash_embed(["锂枝晶", "细胞膜"])
     assert not np.allclose(vectors[0], vectors[1])
+
+
+def test_embed_texts_hash_matches_hash_embed() -> None:
+    texts = ["SEI membrane", "锂枝晶"]
+    got = embed_texts(texts, backend="hash")
+    assert got.shape == (2, 64)
+    assert got.dtype == np.float32
+    assert np.allclose(got, hash_embed(texts))
+
+
+def test_embed_texts_rejects_unknown_backend() -> None:
+    with pytest.raises(ValueError):
+        embed_texts(["SEI membrane"], backend="faiss")
+
+
+def test_import_does_not_load_fastembed() -> None:
+    import sys
+
+    assert "fastembed" not in sys.modules
