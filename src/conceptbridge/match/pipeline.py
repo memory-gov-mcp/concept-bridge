@@ -53,6 +53,7 @@ def build_result(
     graph_version: str,
 ) -> BridgeResult:
     started = time.perf_counter()
+    deadline = started + get_settings().bridge_timeout_s
     sources = select_sources(query, mechanisms, source_domain)
     ranked, considered = rank_candidates(
         sources,
@@ -63,7 +64,11 @@ def build_result(
     domain = sources[0].domain if sources else "unknown"
     built = build_graph(sources)
     bridges = []
+    degraded = False
     for pair in ranked:
+        if time.perf_counter() >= deadline:
+            degraded = True
+            break
         explained = rerank_explanation(pair.source, pair.target)
         bridges.append(
             Bridge(
@@ -89,7 +94,7 @@ def build_result(
             latency_ms=elapsed_ms,
             candidates=max(considered, len(bridges)),
             graph_version=graph_version,
-            degraded=False,
+            degraded=degraded,
             stub=False,
         ),
     )
@@ -100,11 +105,41 @@ def build_result(
     return result
 
 
+def degraded_result(query: str, graph_version: str, started: float) -> BridgeResult:
+    """内部失败时的合法空结果。不退回 fixture，避免把样例桥当成这次查询的答案。"""
+    elapsed_ms = max(0, int((time.perf_counter() - started) * 1000))
+    return BridgeResult(
+        query=query,
+        source=BridgeSource(domain="unknown"),
+        bridges=[],
+        meta=ResultMeta(
+            latency_ms=elapsed_ms,
+            candidates=0,
+            graph_version=graph_version or "unknown",
+            degraded=True,
+            stub=False,
+        ),
+    )
+
+
 async def run_bridge(
     query: str,
     source_domain: str | None = None,
     top_k: int = 5,
     exclude_domains: list[str] | None = None,
 ) -> BridgeResult:
-    mechanisms, version = load_corpus()
-    return build_result(query, mechanisms, source_domain, top_k, exclude_domains, graph_version=version)
+    started = time.perf_counter()
+    version = "unknown"
+    try:
+        mechanisms, version = load_corpus()
+        return build_result(
+            query,
+            mechanisms,
+            source_domain,
+            top_k,
+            exclude_domains,
+            graph_version=version,
+        )
+    except Exception as exc:
+        log.error("bridge_degraded", extra={"kv": {"err": type(exc).__name__}})
+        return degraded_result(query, version, started)
