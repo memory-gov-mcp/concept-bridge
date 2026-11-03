@@ -1,4 +1,5 @@
 import type { ElementDefinition, Position } from "cytoscape";
+import { actionLabel } from "./action";
 import type { Bridge, BridgeResult, GraphEdge, GraphNode, Mechanism } from "./api";
 
 type Side = "source" | "target";
@@ -26,12 +27,6 @@ function addMechanism(
   };
   if (!edges.has(edgeKey(edge))) edges.set(edgeKey(edge), edge);
 }
-
-const actions: Record<string, string> = {
-  transport: "传输", amplify: "放大", inhibit: "抑制", promote: "促进", regulate: "调节",
-  recognize: "识别", transform: "转化", stabilize: "稳定", compete: "竞争",
-  separate: "分隔", measure: "测量", other: "其他",
-};
 
 function clusterElements(
   side: Side,
@@ -62,7 +57,7 @@ function clusterElements(
         id: `${side}:edge:${key}`,
         source: nodeId(side, edge.source),
         target: nodeId(side, edge.target),
-        label: ordered.length > 30 ? "" : actions[edge.action_class] ?? edge.action_class,
+        label: ordered.length > 30 ? "" : actionLabel(edge.action_class),
       },
       classes: side,
     });

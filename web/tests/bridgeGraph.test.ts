@@ -52,4 +52,17 @@ describe("双域图模型", () => {
   it("anchors the SVG curve at both rendered node positions", () => {
     expect(bridgeArc({ x: 40, y: 80 }, { x: 340, y: 110 })).toMatch(/^M 40 80 C .+, 340 110$/);
   });
+
+  it("localizes the graph labels for each remaining contract action class", () => {
+    for (const [action_class, label] of [["degrade", "降解"], ["isolate", "隔离"], ["trigger", "触发"]]) {
+      const target = sample.bridges[0];
+      const bridge = {
+        ...target,
+        target_mechanism: { ...target.target_mechanism, action: { ...target.target_mechanism.action, action_class } },
+      };
+      expect(bridgeGraph(sample, bridge).elements).toContainEqual(expect.objectContaining({
+        group: "edges", classes: "target", data: expect.objectContaining({ label }),
+      }));
+    }
+  });
 });

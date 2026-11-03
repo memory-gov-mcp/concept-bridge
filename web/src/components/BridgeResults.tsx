@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { actionLabel } from "../lib/action";
 import type { BridgeResult, Mechanism } from "../lib/api";
 import { domainLabel } from "../lib/domain";
 import { Card } from "./ui/Card";
@@ -14,7 +15,12 @@ const scoreLabels = [
 function MechanismText({ mechanism }: { mechanism: Mechanism }) {
   return (
     <div>
-      <p className="font-semibold">{mechanism.subject.surface} → {mechanism.action.verb} → {mechanism.object.surface}</p>
+      <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 font-semibold wrap-anywhere">
+        <span>{mechanism.subject.surface}</span>
+        <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs text-emerald-900">{actionLabel(mechanism.action.action_class)} →</span>
+        <span>{mechanism.object.surface}</span>
+      </p>
+      <p className="mt-1 font-mono text-xs text-emerald-950/75 wrap-anywhere">{mechanism.action.verb}</p>
       <p className="mt-1 text-sm leading-relaxed text-emerald-950/80">{mechanism.result}</p>
     </div>
   );
@@ -51,7 +57,7 @@ function CitationList({ citations, sample }: { citations: Citation[]; sample: bo
         const active = citation === highlighted;
         const openAlexId = /^(?:https:\/\/openalex\.org\/)?(W[0-9]+)$/.exec(citation.paper_id)?.[1];
         return (
-          <figure key={excerptId} className="mt-2 rounded-lg border border-border bg-background p-3 text-sm">
+        <figure key={excerptId} className={`mt-2 rounded-lg border p-3 text-sm ${active ? "border-amber-400 bg-amber-50" : "border-border bg-background"}`}>
             <figcaption>
               <button
                 type="button"
@@ -90,13 +96,16 @@ function CitationList({ citations, sample }: { citations: Citation[]; sample: bo
   );
 }
 
-export function BridgeResults({ result }: { result: BridgeResult }) {
+export function BridgeResults({ result, onInspectBridge }: {
+  result: BridgeResult;
+  onInspectBridge?: (index: number) => void;
+}) {
   const bridges = result.bridges ?? [];
   const sample = result.meta.stub === true || result.meta.graph_version === "fixtures";
   return (
     <section id="bridge-results" className="mt-8 space-y-5" aria-label="桥接结果">
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h2 className="text-2xl font-bold">{result.query}</h2>
+        <h2 className="min-w-0 text-2xl font-bold wrap-anywhere">{result.query}</h2>
         <p className="text-sm text-emerald-950/75">{bridges.length} 条跨域桥 · {result.meta.latency_ms} 毫秒</p>
       </div>
       {sample && <p className="rounded-lg bg-amber-100 px-4 py-2 text-sm text-amber-950">样例结果 · 引用片段来自演示数据</p>}
@@ -110,8 +119,16 @@ export function BridgeResults({ result }: { result: BridgeResult }) {
       )}
       {bridges.map((item, index) => (
         <Card key={item.target_mechanism.id} className="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold tracking-widest text-emerald-800">跨域桥 {String(index + 1).padStart(2, "0")} · {domainLabel(item.target_domain)}</h3>
+          <div className="min-w-0 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-xs font-bold tracking-widest text-emerald-800">跨域桥 {String(index + 1).padStart(2, "0")} · {domainLabel(item.target_domain)}</h3>
+              {onInspectBridge && (
+                <button type="button" className="rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-emerald-700"
+                  aria-controls="bridge-graph" aria-label={`在图谱中查看第 ${index + 1} 条桥`} onClick={() => onInspectBridge(index)}>
+                  在图谱中查看 ↑
+                </button>
+              )}
+            </div>
             <MechanismText mechanism={item.target_mechanism} />
             <div className="rounded-lg bg-emerald-50 p-4">
               <h4 className="text-sm font-bold text-emerald-800">可迁移假设</h4>

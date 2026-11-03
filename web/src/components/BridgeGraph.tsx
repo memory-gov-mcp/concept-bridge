@@ -115,9 +115,17 @@ function BridgeGraphView({ result, bridge }: { result: BridgeResult; bridge: Bri
     cy.on("render", syncArcs);
     fitGraph(cy);
     syncArcs();
+    let width = cy.width();
+    let height = cy.height();
     const observer = new ResizeObserver(() => {
       cy.resize();
-      fitGraph(cy);
+      const nextWidth = cy.width();
+      const nextHeight = cy.height();
+      if (nextWidth !== width || nextHeight !== height) {
+        cy.panBy({ x: (nextWidth - width) / 2, y: (nextHeight - height) / 2 });
+        width = nextWidth;
+        height = nextHeight;
+      }
     });
     observer.observe(canvas.current);
 
@@ -176,10 +184,10 @@ function BridgeGraphView({ result, bridge }: { result: BridgeResult; bridge: Bri
           <button type="button" className={buttonClass} onClick={() => { if (cyRef.current) fitGraph(cyRef.current); }}>重置视图</button>
         </div>
       </div>
-      <figure className="overflow-hidden rounded-xl border border-border bg-background">
+      <figure className="overflow-hidden rounded-2xl border border-border bg-background">
         <div className="grid grid-cols-2 gap-2 border-b border-border px-3 py-2 text-xs font-bold sm:px-4 sm:text-sm">
-          <p className="text-emerald-800">● 源领域 · {domainLabel(result.source.domain)}</p>
-          <p className="text-right text-violet-800">● 目标领域 · {domainLabel(bridge.target_domain)}</p>
+          <p className="text-emerald-800 wrap-anywhere">● 源领域 · {domainLabel(result.source.domain)}</p>
+          <p className="text-right text-violet-800 wrap-anywhere">● 目标领域 · {domainLabel(bridge.target_domain)}</p>
         </div>
         <div className="relative h-72 bg-[radial-gradient(#cdd9d1_1px,transparent_1px)] bg-[size:18px_18px] sm:h-[21rem]">
           <div ref={canvas} data-testid="bridge-graph-canvas" aria-hidden="true" className="h-full w-full" />
