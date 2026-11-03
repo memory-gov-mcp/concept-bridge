@@ -1,7 +1,7 @@
 """文本向量。默认哈希嵌入，保证单测和 CI 不下载模型。
 
-生产索引若要换 fastembed，调用方显式传 backend="fastembed"。
-这里不在 import 时加载模型。
+`embed_texts(..., backend="fastembed")` 才懒加载 fastembed。
+模块导入本身不加载模型。
 """
 
 from __future__ import annotations
@@ -29,6 +29,31 @@ def hash_embed(texts: list[str], dim: int = DIM) -> np.ndarray:
         else:
             out[row] /= norm
     return out
+
+
+def embed_texts(texts: list[str], *, backend: str = "hash") -> np.ndarray:
+    """按 backend 出向量。未知 backend 抛 ValueError。fastembed 不在本函数的默认路径上。"""
+    if backend == "hash":
+        return hash_embed(texts)
+    if backend == "fastembed":
+        return _fastembed(texts)
+    raise ValueError(f"unknown embedding backend: {backend}")
+
+
+def _fastembed(texts: list[str]) -> np.ndarray:
+    from fastembed import TextEmbedding
+
+    from ..common.config import get_settings
+
+    model = TextEmbedding(model_name=get_settings().embed_model)
+    rows = [np.asarray(vector, dtype=np.float32) for vector in model.embed(texts)]
+    if not rows:
+        return np.zeros((0, DIM), dtype=np.float32)
+    stacked = np.vstack(rows)
+    norms = np.linalg.norm(stacked, axis=1, keepdims=True)
+    zero = norms == 0.0
+    norms[zero] = 1.0
+    return stacked / norms
 
 
 def _grams(text: str) -> list[str]:
