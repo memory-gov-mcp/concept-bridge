@@ -90,12 +90,13 @@ export function queryError(query: string) {
 }
 
 async function request<T>(path: string, base: string, init?: RequestInit): Promise<T> {
-  const signal = AbortSignal.timeout(15_000);
+  const timeout = AbortSignal.timeout(15_000);
+  const signal = init?.signal ? AbortSignal.any([init.signal, timeout]) : timeout;
   let response: Response;
   try {
     response = await fetch(`${base}/api/v1${path}`, { ...init, signal });
   } catch {
-    throw new Error(signal.aborted ? errorMessages.UPSTREAM_TIMEOUT : "无法连接查询服务，请重试。");
+    throw new Error(timeout.aborted ? errorMessages.UPSTREAM_TIMEOUT : "无法连接查询服务，请重试。");
   }
 
   const body = await response.json().catch(() => null);
@@ -108,11 +109,12 @@ async function request<T>(path: string, base: string, init?: RequestInit): Promi
   return body as T;
 }
 
-export function bridge(body: BridgeRequest, base = "") {
+export function bridge(body: BridgeRequest, base = "", signal?: AbortSignal) {
   return request<BridgeResult>("/bridge", base, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    signal,
   });
 }
 
