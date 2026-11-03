@@ -426,8 +426,8 @@ conceptbridge/
 
 ### 12.3 分支与合并
 
-- 从 `develop` 切短分支：`feat/p<N>-<短语>`、`fix/p<N>-<短语>`、`docs/<短语>`。
-- 不直接提交到 `main` / `develop`；`main` 只接收 `develop` 的 merge。
+- 从 `main` 切短分支：`feat/p<N>-<短语>`、`fix/p<N>-<短语>`、`docs/<短语>`。
+- 不直接提交到 `main`；`main` 只接收 PR 的 merge。**本项目不使用 `develop`**——2026-11-03 决策：团队实际按 feature → `main` 走，多一层分支只多一次操作失误。
 - 禁止 `git push --force` / `--force-with-lease`；撤销用 `git revert`。
 - Conventional Commits，中文祈使句、一行、不加句号：
   `feat(match): 增加结构签名打分与反琐碎惩罚`
