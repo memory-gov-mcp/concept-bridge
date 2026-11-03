@@ -53,6 +53,7 @@ def build_result(
     graph_version: str,
 ) -> BridgeResult:
     started = time.perf_counter()
+    deadline = started + get_settings().bridge_timeout_s
     sources = select_sources(query, mechanisms, source_domain)
     ranked, considered = rank_candidates(
         sources,
@@ -63,7 +64,11 @@ def build_result(
     domain = sources[0].domain if sources else "unknown"
     built = build_graph(sources)
     bridges = []
+    degraded = False
     for pair in ranked:
+        if time.perf_counter() >= deadline:
+            degraded = True
+            break
         explained = rerank_explanation(pair.source, pair.target)
         bridges.append(
             Bridge(
@@ -89,7 +94,7 @@ def build_result(
             latency_ms=elapsed_ms,
             candidates=max(considered, len(bridges)),
             graph_version=graph_version,
-            degraded=False,
+            degraded=degraded,
             stub=False,
         ),
     )

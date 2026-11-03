@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 
+import conceptbridge.match.pipeline as pipeline
+from conceptbridge.common.config import get_settings
 from conceptbridge.common.schemas import BridgeResult
 from conceptbridge.match.pipeline import run_bridge
 
@@ -23,6 +25,30 @@ def test_demo_queries_return_cited_bridges() -> None:
             roles = {item.source_role for item in bridge.alignment}
             assert {"subject", "object"} <= roles
             assert bridge.citations[0].span == bridge.target_mechanism.evidence.span
+
+
+def test_timeout_returns_partial_bridges(monkeypatch) -> None:
+    full = asyncio.run(run_bridge("锂枝晶抑制"))
+    assert len(full.bridges) >= 2
+
+    ticks = iter([0.0, 0.0, 100.0, 100.0, 100.0])
+
+    def fake_clock() -> float:
+        try:
+            return next(ticks)
+        except StopIteration:
+            return 100.0
+
+    monkeypatch.setattr(pipeline.time, "perf_counter", fake_clock)
+    monkeypatch.setattr(get_settings(), "bridge_timeout_s", 1.0)
+
+    limited = asyncio.run(run_bridge("锂枝晶抑制"))
+    checked = BridgeResult.model_validate(limited.model_dump())
+    assert 0 < len(checked.bridges) < len(full.bridges)
+    assert checked.meta.degraded is True
+    assert checked.meta.stub is False
+    for bridge in checked.bridges:
+        assert bridge.citations[0].span == bridge.target_mechanism.evidence.span
 
 
 def test_top_k_and_exclude_domains() -> None:
