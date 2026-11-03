@@ -1,0 +1,1248 @@
+[
+  {
+    "id": "https://openalex.org/W4412942143",
+    "title": "Numerical simulation of interaction mechanisms between lithium dendrites and cavitation bubbles",
+    "abstract_inverted_index": {
+      "The": [
+        0,
+        115,
+        171,
+        191
+      ],
+      "recycling": [
+        1
+      ],
+      "of": [
+        2,
+        10,
+        14,
+        42,
+        64,
+        71,
+        74,
+        106,
+        122,
+        166,
+        202
+      ],
+      "lithium-ion": [
+        3
+      ],
+      "batteries": [
+        4
+      ],
+      "is": [
+        5,
+        31,
+        53,
+        84,
+        125,
+        149
+      ],
+      "faced": [
+        6
+      ],
+      "with": [
+        7
+      ],
+      "the": [
+        8,
+        23,
+        50,
+        57,
+        65,
+        68,
+        87,
+        93,
+        103,
+        119,
+        137,
+        142,
+        155,
+        163,
+        176,
+        200
+      ],
+      "problem": [
+        9
+      ],
+      "insufficient": [
+        11
+      ],
+      "stripping": [
+        12
+      ],
+      "efficiency": [
+        13
+      ],
+      "electrode": [
+        15
+      ],
+      "materials": [
+        16
+      ],
+      "and": [
+        17,
+        37,
+        99,
+        136,
+        162,
+        175,
+        197,
+        206
+      ],
+      "current": [
+        18
+      ],
+      "collectors.": [
+        19
+      ],
+      "In": [
+        20
+      ],
+      "this": [
+        21
+      ],
+      "context,": [
+        22
+      ],
+      "finite": [
+        24
+      ],
+      "volume": [
+        25
+      ],
+      "method": [
+        26
+      ],
+      "(FVM)": [
+        27
+      ],
+      "numerical": [
+        28
+      ],
+      "simulation": [
+        29
+      ],
+      "result": [
+        30
+      ],
+      "used": [
+        32
+      ],
+      "to": [
+        33
+      ],
+      "verify": [
+        34
+      ],
+      "each": [
+        35
+      ],
+      "other,": [
+        36
+      ],
+      "a": [
+        38,
+        150
+      ],
+      "full": [
+        39
+      ],
+      "cycle": [
+        40
+      ],
+      "model": [
+        41
+      ],
+      "ultrasonic": [
+        43,
+        94,
+        97,
+        128,
+        160,
+        203
+      ],
+      "cavitation": [
+        44,
+        107,
+        123
+      ],
+      "bubble": [
+        45,
+        108,
+        133
+      ],
+      "lithium": [
+        46,
+        109,
+        146,
+        189
+      ],
+      "dendrite": [
+        47,
+        110
+      ],
+      "interaction": [
+        48,
+        111
+      ],
+      "in": [
+        49
+      ],
+      "flow": [
+        51,
+        138
+      ],
+      "field": [
+        52
+      ],
+      "constructed.": [
+        54
+      ],
+      "Based": [
+        55
+      ],
+      "on": [
+        56,
+        188
+      ],
+      "Keller–Miksis": [
+        58
+      ],
+      "equation": [
+        59
+      ],
+      "obtained": [
+        60
+      ],
+      "by": [
+        61,
+        81,
+        127,
+        159,
+        181,
+        199
+      ],
+      "compressible": [
+        62
+      ],
+      "modification": [
+        63
+      ],
+      "Rayleigh–Plesset": [
+        66
+      ],
+      "equation,": [
+        67
+      ],
+      "calculation": [
+        69
+      ],
+      "formula": [
+        70
+      ],
+      "natural": [
+        72,
+        169
+      ],
+      "frequency": [
+        73
+      ],
+      "small": [
+        75
+      ],
+      "bubbles,": [
+        76
+      ],
+      "which": [
+        77
+      ],
+      "are": [
+        78,
+        195
+      ],
+      "more": [
+        79
+      ],
+      "affected": [
+        80,
+        126
+      ],
+      "surface": [
+        82,
+        134
+      ],
+      "tension,": [
+        83,
+        135
+      ],
+      "derived": [
+        85
+      ],
+      "through": [
+        86,
+        145
+      ],
+      "dynamic": [
+        88
+      ],
+      "theoretical": [
+        89
+      ],
+      "formula.": [
+        90
+      ],
+      "By": [
+        91
+      ],
+      "changing": [
+        92
+      ],
+      "pressure": [
+        95,
+        161,
+        204
+      ],
+      "amplitude,": [
+        96
+      ],
+      "frequency,": [
+        98
+      ],
+      "other": [
+        100
+      ],
+      "key": [
+        101
+      ],
+      "parameters,": [
+        102
+      ],
+      "internal": [
+        104
+      ],
+      "mechanism": [
+        105
+      ],
+      "was": [
+        112
+      ],
+      "studied": [
+        113
+      ],
+      "parametrically.": [
+        114
+      ],
+      "results": [
+        116
+      ],
+      "show": [
+        117
+      ],
+      "that": [
+        118
+      ],
+      "evolution": [
+        120
+      ],
+      "process": [
+        121
+      ],
+      "bubbles": [
+        124
+      ],
+      "pressure,": [
+        129
+      ],
+      "fluid": [
+        130,
+        143
+      ],
+      "inertia": [
+        131
+      ],
+      "momentum,": [
+        132
+      ],
+      "resistance": [
+        139
+      ],
+      "effect": [
+        140
+      ],
+      "when": [
+        141
+      ],
+      "flows": [
+        144
+      ],
+      "dendrites.": [
+        147,
+        190
+      ],
+      "There": [
+        148
+      ],
+      "coupled": [
+        151,
+        196
+      ],
+      "two-mode": [
+        152
+      ],
+      "vibration": [
+        153,
+        157,
+        165
+      ],
+      "between": [
+        154
+      ],
+      "forced": [
+        156
+      ],
+      "dominated": [
+        158
+      ],
+      "intrinsic": [
+        164
+      ],
+      "its": [
+        167
+      ],
+      "own": [
+        168
+      ],
+      "frequency.": [
+        170,
+        207
+      ],
+      "primary": [
+        172
+      ],
+      "shock": [
+        173,
+        178
+      ],
+      "wave": [
+        174,
+        179
+      ],
+      "secondary": [
+        177
+      ],
+      "generated": [
+        180
+      ],
+      "Rayleigh": [
+        182
+      ],
+      "collapse": [
+        183
+      ],
+      "produce": [
+        184
+      ],
+      "double": [
+        185,
+        192
+      ],
+      "pulse": [
+        186,
+        193
+      ],
+      "loads": [
+        187
+      ],
+      "peaks": [
+        194
+      ],
+      "decoupled": [
+        198
+      ],
+      "adjustment": [
+        201
+      ],
+      "amplitude": [
+        205
+      ]
+    },
+    "publication_year": 2025,
+    "primary_topic": {
+      "id": "https://openalex.org/T11842",
+      "display_name": "Ultrasound and Cavitation Phenomena",
+      "score": 0.9810000061988831,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2505",
+        "display_name": "Materials Chemistry"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/25",
+        "display_name": "Materials Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    "cited_by_count": 2,
+    "doi": "https://doi.org/10.1063/5.0280765"
+  },
+  {
+    "id": "https://openalex.org/W2954392247",
+    "title": "Atomistic Simulations of Membrane Ion Channel Conduction, Gating, and Modulation",
+    "abstract_inverted_index": {
+      "Membrane": [
+        0
+      ],
+      "ion": [
+        1,
+        79,
+        124,
+        133,
+        169,
+        222
+      ],
+      "channels": [
+        2,
+        80,
+        170
+      ],
+      "are": [
+        3,
+        91,
+        172
+      ],
+      "the": [
+        4,
+        9,
+        44,
+        59,
+        72,
+        117,
+        179
+      ],
+      "fundamental": [
+        5
+      ],
+      "electrical": [
+        6
+      ],
+      "components": [
+        7
+      ],
+      "in": [
+        8,
+        14,
+        27,
+        95,
+        128
+      ],
+      "nervous": [
+        10,
+        175
+      ],
+      "system.": [
+        11
+      ],
+      "Recent": [
+        12
+      ],
+      "developments": [
+        13
+      ],
+      "X-ray": [
+        15
+      ],
+      "crystallography": [
+        16
+      ],
+      "and": [
+        17,
+        61,
+        86,
+        126,
+        131,
+        178,
+        192,
+        202,
+        225,
+        234
+      ],
+      "cryo-EM": [
+        18
+      ],
+      "microscopy": [
+        19
+      ],
+      "have": [
+        20,
+        41
+      ],
+      "revealed": [
+        21
+      ],
+      "what": [
+        22
+      ],
+      "these": [
+        23,
+        120
+      ],
+      "proteins": [
+        24
+      ],
+      "look": [
+        25
+      ],
+      "like": [
+        26
+      ],
+      "atomic": [
+        28
+      ],
+      "detail": [
+        29
+      ],
+      "but": [
+        30
+      ],
+      "do": [
+        31
+      ],
+      "not": [
+        32
+      ],
+      "tell": [
+        33
+      ],
+      "us": [
+        34
+      ],
+      "how": [
+        35
+      ],
+      "they": [
+        36
+      ],
+      "function.": [
+        37,
+        66
+      ],
+      "Molecular": [
+        38
+      ],
+      "dynamics": [
+        39
+      ],
+      "simulations": [
+        40,
+        213
+      ],
+      "progressed": [
+        42
+      ],
+      "to": [
+        43,
+        54,
+        81,
+        122,
+        174,
+        196
+      ],
+      "point": [
+        45
+      ],
+      "that": [
+        46,
+        64,
+        171,
+        204
+      ],
+      "we": [
+        47,
+        70
+      ],
+      "can": [
+        48,
+        103,
+        153
+      ],
+      "now": [
+        49
+      ],
+      "simulate": [
+        50
+      ],
+      "realistic": [
+        51
+      ],
+      "molecular": [
+        52
+      ],
+      "assemblies": [
+        53
+      ],
+      "produce": [
+        55
+      ],
+      "quantitative": [
+        56
+      ],
+      "calculations": [
+        57
+      ],
+      "of": [
+        58,
+        74,
+        107,
+        119,
+        136,
+        181,
+        189,
+        218
+      ],
+      "thermodynamic": [
+        60
+      ],
+      "kinetic": [
+        62
+      ],
+      "quantities": [
+        63
+      ],
+      "control": [
+        65
+      ],
+      "In": [
+        67
+      ],
+      "this": [
+        68
+      ],
+      "review,": [
+        69
+      ],
+      "summarize": [
+        71
+      ],
+      "state": [
+        73
+      ],
+      "atomistic": [
+        75,
+        96
+      ],
+      "simulation": [
+        76
+      ],
+      "methods": [
+        77
+      ],
+      "for": [
+        78,
+        161,
+        166,
+        209,
+        231
+      ],
+      "understand": [
+        82
+      ],
+      "their": [
+        83
+      ],
+      "conduction,": [
+        84
+      ],
+      "activation,": [
+        85,
+        162
+      ],
+      "drug": [
+        87,
+        194,
+        210,
+        235
+      ],
+      "modulation": [
+        88,
+        226
+      ],
+      "mechanisms.": [
+        89
+      ],
+      "We": [
+        90,
+        115,
+        184
+      ],
+      "at": [
+        92
+      ],
+      "a": [
+        93,
+        140,
+        197,
+        216,
+        228
+      ],
+      "crossroads": [
+        94
+      ],
+      "simulation,": [
+        97
+      ],
+      "where": [
+        98
+      ],
+      "long": [
+        99
+      ],
+      "time": [
+        100,
+        148
+      ],
+      "scale": [
+        101
+      ],
+      "observation": [
+        102
+      ],
+      "provide": [
+        104
+      ],
+      "unbiased": [
+        105
+      ],
+      "exploration": [
+        106
+      ],
+      "mechanisms,": [
+        108
+      ],
+      "supplemented": [
+        109
+      ],
+      "by": [
+        110
+      ],
+      "biased": [
+        111
+      ],
+      "free": [
+        112,
+        158
+      ],
+      "energy": [
+        113,
+        159
+      ],
+      "methodologies.": [
+        114
+      ],
+      "illustrate": [
+        116
+      ],
+      "use": [
+        118
+      ],
+      "approaches": [
+        121,
+        152
+      ],
+      "describe": [
+        123
+      ],
+      "conduction": [
+        125
+      ],
+      "selectivity": [
+        127
+      ],
+      "voltage-gated": [
+        129
+      ],
+      "sodium": [
+        130,
+        198
+      ],
+      "acid-sensing": [
+        132
+      ],
+      "channels.": [
+        134
+      ],
+      "Studies": [
+        135
+      ],
+      "channel": [
+        137,
+        223
+      ],
+      "gating": [
+        138
+      ],
+      "present": [
+        139
+      ],
+      "significant": [
+        141
+      ],
+      "challenge,": [
+        142
+      ],
+      "as": [
+        143,
+        163,
+        227
+      ],
+      "activation": [
+        144
+      ],
+      "occurs": [
+        145
+      ],
+      "on": [
+        146,
+        156
+      ],
+      "longer": [
+        147
+      ],
+      "scales.": [
+        149
+      ],
+      "Enhanced": [
+        150
+      ],
+      "sampling": [
+        151
+      ],
+      "ensure": [
+        154
+      ],
+      "convergence": [
+        155
+      ],
+      "minimum": [
+        157
+      ],
+      "pathways": [
+        160,
+        203
+      ],
+      "illustrated": [
+        164
+      ],
+      "here": [
+        165
+      ],
+      "pentameric": [
+        167
+      ],
+      "ligand-gated": [
+        168
+      ],
+      "principal": [
+        173
+      ],
+      "system": [
+        176
+      ],
+      "function": [
+        177,
+        224
+      ],
+      "actions": [
+        180
+      ],
+      "general": [
+        182
+      ],
+      "anesthetics.": [
+        183
+      ],
+      "also": [
+        185
+      ],
+      "examine": [
+        186
+      ],
+      "recent": [
+        187
+      ],
+      "studies": [
+        188
+      ],
+      "local": [
+        190
+      ],
+      "anesthetic": [
+        191
+      ],
+      "antiepileptic": [
+        193
+      ],
+      "binding": [
+        195
+      ],
+      "channel,": [
+        199
+      ],
+      "revealing": [
+        200
+      ],
+      "sites": [
+        201
+      ],
+      "may": [
+        205
+      ],
+      "offer": [
+        206,
+        215
+      ],
+      "new": [
+        207
+      ],
+      "targets": [
+        208
+      ],
+      "development.": [
+        211,
+        236
+      ],
+      "Modern": [
+        212
+      ],
+      "thus": [
+        214
+      ],
+      "range": [
+        217
+      ],
+      "molecular-level": [
+        219
+      ],
+      "insights": [
+        220
+      ],
+      "into": [
+        221
+      ],
+      "learning": [
+        229
+      ],
+      "platform": [
+        230
+      ],
+      "mechanistic": [
+        232
+      ],
+      "discovery": [
+        233
+      ]
+    },
+    "publication_year": 2019,
+    "primary_topic": {
+      "id": "https://openalex.org/T10493",
+      "display_name": "Ion channel regulation and function",
+      "score": 0.9779999852180481,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1312",
+        "display_name": "Molecular Biology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    "cited_by_count": 147,
+    "doi": "https://doi.org/10.1021/acs.chemrev.8b00630"
+  },
+  {
+    "id": "https://openalex.org/W2152195021",
+    "title": "Particle swarm optimization",
+    "abstract_inverted_index": {
+      "A": [
+        0
+      ],
+      "concept": [
+        1
+      ],
+      "for": [
+        2
+      ],
+      "the": [
+        3,
+        27,
+        34
+      ],
+      "optimization": [
+        4,
+        43,
+        55
+      ],
+      "of": [
+        5,
+        16,
+        24,
+        26,
+        33
+      ],
+      "nonlinear": [
+        6,
+        41
+      ],
+      "functions": [
+        7
+      ],
+      "using": [
+        8
+      ],
+      "particle": [
+        9,
+        53
+      ],
+      "swarm": [
+        10,
+        54
+      ],
+      "methodology": [
+        11
+      ],
+      "is": [
+        12,
+        19,
+        29,
+        36
+      ],
+      "introduced.": [
+        13
+      ],
+      "The": [
+        14,
+        50
+      ],
+      "evolution": [
+        15
+      ],
+      "several": [
+        17
+      ],
+      "paradigms": [
+        18,
+        28
+      ],
+      "outlined,": [
+        20
+      ],
+      "and": [
+        21,
+        38,
+        44,
+        56,
+        60
+      ],
+      "an": [
+        22
+      ],
+      "implementation": [
+        23
+      ],
+      "one": [
+        25
+      ],
+      "discussed.": [
+        30
+      ],
+      "Benchmark": [
+        31
+      ],
+      "testing": [
+        32
+      ],
+      "paradigm": [
+        35
+      ],
+      "described,": [
+        37
+      ],
+      "applications,": [
+        39
+      ],
+      "including": [
+        40
+      ],
+      "function": [
+        42
+      ],
+      "neural": [
+        45
+      ],
+      "network": [
+        46
+      ],
+      "training,": [
+        47
+      ],
+      "are": [
+        48,
+        63
+      ],
+      "proposed.": [
+        49
+      ],
+      "relationships": [
+        51
+      ],
+      "between": [
+        52
+      ],
+      "both": [
+        57
+      ],
+      "artificial": [
+        58
+      ],
+      "life": [
+        59
+      ],
+      "genetic": [
+        61
+      ],
+      "algorithms": [
+        62
+      ],
+      "described.": [
+        64
+      ]
+    },
+    "publication_year": 2002,
+    "primary_topic": {
+      "id": "https://openalex.org/T10100",
+      "display_name": "Metaheuristic Optimization Algorithms Research",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1702",
+        "display_name": "Artificial Intelligence"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    "cited_by_count": 58273,
+    "doi": "https://doi.org/10.1109/icnn.1995.488968"
+  }
+]
