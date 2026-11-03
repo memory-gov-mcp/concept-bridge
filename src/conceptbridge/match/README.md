@@ -1,6 +1,6 @@
 # match — 结构匹配（Owner: P2）
 
-## 必须实现的唯一入口
+## 入口（签名冻结，改动需 RFC）
 
 ```python
 # src/conceptbridge/match/pipeline.py
@@ -12,8 +12,15 @@ async def run_bridge(
 ) -> BridgeResult: ...
 ```
 
-**这个文件一存在，P3 的 API 就自动从 fixture 切到真实实现**（见 `api/services/bridge_service.py`）。
-签名已冻结，改动需 RFC。
+`api/services/bridge_service.py` 能导入这个函数时，非 `DEMO_MODE` 的 `/api/v1/bridge` 就调用它，成功时 `meta.stub=false`。
+
+`load_corpus()` 的语料：`data/index/` 里有带 `graph.pkl` 的快照就用最新一份，否则用 `fixtures/bridge.sample.json`。
+
+```bash
+uv run python -m conceptbridge.match.cli --query "锂枝晶抑制" --fixtures
+```
+
+`--fixtures` 只读样例，不碰 `data/index`。输出要能过 `BridgeResult` 校验。
 
 ## 打分（公式见 AGENTS.md §5.3，权重放 `config.py`）
 
@@ -23,21 +30,20 @@ struct_sim  = 0.30*role_type + 0.25*action_class + 0.15*causality
 final = 0.45*struct_sim + 0.30*sem_sim + 0.25*domain_dist - 0.35*triviality
 ```
 
-两个必须有的东西：
+`final` 夹到 `[0, 1]`。语义相似度用哈希向量的内积，不是 e5。
 
-1. **反琐碎惩罚**。没有它，LLM 会给"都有能量输入"这类废话，P@5 直接被垃圾占满。
-2. **`alignment`**。前端靠它画对齐高亮，是"3 秒 wow"的数据基础。没有 alignment，桥动画画不出来。
+两条已经在结果里的约束：
 
-## 降级路径
+1. **反琐碎惩罚**。泛化表面词「影响 / 促进 / 相关 / 参与」以及空条件会把 `triviality` 打成 1。12 类里的 `promote` 本身不因此被判死。
+2. **`alignment`**。规则解释为每条桥生成 subject、object 两条角色对齐。前端靠它画高亮。引用的 `span` 等于目标机制的 `evidence.span`。LLM 缓存命中时只替换假设和差异，不改引用。
 
-任何内部异常都不许冒到 API 层。超时 → 返回 `degraded=True` 的少结果，而不是 500。
+## 降级路径（现状）
+
+成功路径上 `meta.degraded` 固定为 false。匹配内部若抛异常，异常会冒到 API；API 退回 fixture，并把 `degraded` 标成 true、`stub` 标成 true。超时预算 `settings.bridge_timeout_s`（15 秒）尚未在 `run_bridge` 里使用。
 
 ## 验收（P2-T3）
 
-```bash
-uv run python -m conceptbridge.match.cli --query "锂枝晶抑制" --fixtures
-```
-输出能过 `BridgeResult` 校验；P95 <1500ms（500 机制）。
+上面的 CLI 对「锂枝晶抑制」返回跨域桥，`stub=false`。证据见 `docs/state/p2.md`。
 
 ## 边界
 

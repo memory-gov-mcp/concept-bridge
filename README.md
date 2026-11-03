@@ -39,8 +39,20 @@ Windows 与 Linux 都用 `uv run task <cmd>`。装了 GNU make 时，`make <cmd>
 可以。P2 的 `run_bridge()` 已经合入 `main`。未开 `DEMO_MODE` 时，`/api/v1/bridge` 走真实匹配，`meta.stub=false`。当前语料仍是 `fixtures/bridge.sample.json`。`DEMO_MODE=1` 继续只读这份样例。
 
 - **P4 前端**：对着 `http://127.0.0.1:8000/api/v1/bridge` 写页面。返回的是样例机制上的结构匹配结果。
-- **P2 匹配**：P0 卡 T1–T5 已完成。进度、消融数字和阻塞见 [docs/state/p2.md](docs/state/p2.md)。真实机制库等 P1-T4。
+- **P2 匹配**：P0 卡 T1–T5 已完成。用法见下方，进度见 [docs/state/p2.md](docs/state/p2.md)。真实机制库等 P1-T4。
 - **P1 数据**：见 `src/conceptbridge/ingest/README.md`、`src/conceptbridge/extract/README.md`。
+
+### P2 现在怎么用
+
+未开 `DEMO_MODE` 时，`POST /api/v1/bridge` 调用 `run_bridge`，`meta.stub` 为 false。没有 `data/index/*/graph.pkl` 时，语料是 `fixtures/bridge.sample.json`。`DEMO_MODE=1` 只读这份样例。
+
+每条桥的 `alignment` 给前端做对齐高亮。引用片段是目标机制的 `evidence.span`。
+
+```bash
+uv run python -m conceptbridge.match.cli --query "锂枝晶抑制" --fixtures
+```
+
+接口说明：[src/conceptbridge/graph/README.md](src/conceptbridge/graph/README.md)、[src/conceptbridge/match/README.md](src/conceptbridge/match/README.md)。进度与消融数字：[docs/state/p2.md](docs/state/p2.md)。
 
 ---
 
@@ -49,7 +61,7 @@ Windows 与 Linux 都用 `uv run task <cmd>`。装了 GNU make 时，`make <cmd>
 | 人 | 角色 | 第一件事 |
 |---|---|---|
 | P1 | 数据与抽取 | 读 `ingest/README.md`，跑 P1-T1，先把 200 篇抓下来 |
-| P2 | 图谱与匹配 | P0（T1–T5）已合入 `main`。详情见 [docs/state/p2.md](docs/state/p2.md) |
+| P2 | 图谱与匹配 | 读 [graph/README.md](src/conceptbridge/graph/README.md) 与 [match/README.md](src/conceptbridge/match/README.md)。试跑：`uv run python -m conceptbridge.match.cli --query "锂枝晶抑制" --fixtures` |
 | P3 | 平台与集成 | 骨架已就绪；做 P3-T5 编排 + P3-T6 离线演示 |
 | P4 | 前端与可视化 | 建 `web/`，MSW 按 `contracts/openapi.yaml` 造假，先出结果页 |
 
