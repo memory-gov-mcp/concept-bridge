@@ -31,7 +31,7 @@ def test_timeout_returns_partial_bridges(monkeypatch) -> None:
     full = asyncio.run(run_bridge("锂枝晶抑制"))
     assert len(full.bridges) >= 2
 
-    ticks = iter([0.0, 0.0, 100.0, 100.0, 100.0])
+    ticks = iter([0.0, 0.0, 0.0, 100.0, 100.0, 100.0])
 
     def fake_clock() -> float:
         try:
@@ -49,6 +49,18 @@ def test_timeout_returns_partial_bridges(monkeypatch) -> None:
     assert checked.meta.stub is False
     for bridge in checked.bridges:
         assert bridge.citations[0].span == bridge.target_mechanism.evidence.span
+
+
+def test_internal_error_returns_degraded_result(monkeypatch) -> None:
+    def boom(*_args, **_kwargs):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(pipeline, "rank_candidates", boom)
+    result = asyncio.run(run_bridge("锂枝晶抑制"))
+    checked = BridgeResult.model_validate(result.model_dump())
+    assert checked.bridges == []
+    assert checked.meta.degraded is True
+    assert checked.meta.stub is False
 
 
 def test_top_k_and_exclude_domains() -> None:
