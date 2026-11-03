@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { DemoPage } from "./components/DemoPage";
+import { EvalPage } from "./components/EvalPage";
 import { SearchPage } from "./components/SearchPage";
 import "./style.css";
 
@@ -8,6 +9,7 @@ const mock = import.meta.env.DEV && import.meta.env.MODE === "mock";
 const pages = [
   { hash: "#/", label: "查询" },
   { hash: "#/demo", label: "演示" },
+  { hash: "#/eval", label: "评测" },
 ] as const;
 
 function currentPage() {
@@ -41,6 +43,7 @@ function App() {
         </header>
         {page === "#/" && <SearchPage mock={mock} />}
         {page === "#/demo" && <DemoPage />}
+        {page === "#/eval" && <EvalPage />}
       </div>
     </main>
   );

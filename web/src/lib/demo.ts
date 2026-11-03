@@ -10,7 +10,7 @@ export const demoSteps = [
   { kind: "evidence", title: "核对假设与原文证据", ...primary },
   { kind: "evidence", title: "第二个研究难题", ...second },
   { kind: "evidence", title: "第三个研究难题", ...third },
-  { kind: "recap", title: "总结演示" },
+  { kind: "eval", title: "查看评测结论" },
 ] as const;
 
 export function getDemoReplay(query: string): BridgeResult | undefined {

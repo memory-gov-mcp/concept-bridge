@@ -3,6 +3,7 @@ import { bridge, type BridgeResult } from "../lib/api";
 import { advanceDemo, demoDirection, demoSteps, getDemoReplay } from "../lib/demo";
 import { LazyBridgeGraph } from "./LazyBridgeGraph";
 import { BridgeResults } from "./BridgeResults";
+import { EvalPage } from "./EvalPage";
 import { Card } from "./ui/Card";
 
 const buttonClass = "rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-emerald-700 disabled:opacity-50";
@@ -52,7 +53,7 @@ function LiveSlide({ query, kind }: { query: string; kind: SlideKind }) {
 }
 
 function DemoScene({ step, offline }: { step: (typeof demoSteps)[number]; offline: boolean }) {
-  if (step.kind === "recap") return <Card className="p-6"><p>演示结束。可按左方向键返回任一示例。</p></Card>;
+  if (step.kind === "eval") return <EvalPage offline={offline} />;
   if (step.kind === "question") {
     return (
       <Card className="space-y-4 p-8 sm:p-12">

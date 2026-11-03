@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 import type { BridgeRequest, BridgeResult, HealthResponse } from "../lib/api";
+import { evalSnapshot } from "../lib/evalSnapshot";
 import { sample, sampleQuery } from "./sample";
 
 function invalid(field: string) {
@@ -10,6 +11,7 @@ function invalid(field: string) {
 }
 
 export const handlers = [
+  http.get("*/api/v1/eval/report", () => HttpResponse.json(evalSnapshot)),
   http.get("*/api/v1/health", () => HttpResponse.json<HealthResponse>({
     status: "ok",
     version: "0.1.0",

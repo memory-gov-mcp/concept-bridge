@@ -72,6 +72,25 @@ export interface HealthResponse {
   demo_mode: boolean;
 }
 
+export interface EvalRow {
+  config: string;
+  use_structural?: boolean;
+  use_domain_distance?: boolean;
+  use_rerank?: boolean;
+  p_at_5?: number | null;
+  mrr_at_10?: number | null;
+}
+
+export interface EvalReport {
+  generated_at: string;
+  gold_pairs: number;
+  hard_negatives: number;
+  kappa?: number | null;
+  rows?: EvalRow[];
+  case_study_ids?: string[];
+  notes?: string | null;
+}
+
 const errorMessages: Record<string, string> = {
   BAD_REQUEST: "请检查查询内容后重试。",
   QUERY_TOO_SHORT: "请输入至少 2 个字符。",
@@ -120,4 +139,8 @@ export function bridge(body: BridgeRequest, base = "", signal?: AbortSignal) {
 
 export function health(base = "") {
   return request<HealthResponse>("/health", base);
+}
+
+export function evalReport(base = "", signal?: AbortSignal) {
+  return request<EvalReport>("/eval/report", base, { signal });
 }
