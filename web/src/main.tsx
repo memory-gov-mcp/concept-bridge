@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { createRoot } from "react-dom/client";
+import { LazyBridgeGraph } from "./components/LazyBridgeGraph";
 import { BridgeResults } from "./components/BridgeResults";
 import { bridge, health, queryError, type BridgeResult } from "./lib/api";
 import "./style.css";
@@ -62,6 +63,9 @@ function App() {
         </form>
         {loading && <p role="status" className="mt-5 text-sm">正在查找结构相似的机制…</p>}
         {error && <p role="alert" className="mt-5 rounded-lg bg-red-100 p-3 text-sm text-red-900">{error}</p>}
+        {result?.bridges?.[0] && (
+          <div className="mt-6"><LazyBridgeGraph result={result} bridge={result.bridges[0]} /></div>
+        )}
         {result && <BridgeResults result={result} />}
       </div>
     </main>
