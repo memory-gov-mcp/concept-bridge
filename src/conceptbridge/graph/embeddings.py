@@ -40,13 +40,29 @@ def embed_texts(texts: list[str], *, backend: str = "hash") -> np.ndarray:
     raise ValueError(f"unknown embedding backend: {backend}")
 
 
+def _with_e5_prefix(texts: list[str], model_name: str) -> list[str]:
+    """e5 系列要求 query/passage 前缀，fastembed 的 embed 不会自动加。"""
+    if "e5" not in model_name.lower():
+        return list(texts)
+    prepared: list[str] = []
+    for text in texts:
+        stripped = text.lstrip()
+        if stripped.startswith(("query:", "passage:")):
+            prepared.append(text)
+        else:
+            prepared.append(f"query: {text}")
+    return prepared
+
+
 def _fastembed(texts: list[str]) -> np.ndarray:
     from fastembed import TextEmbedding
 
     from ..common.config import get_settings
 
-    model = TextEmbedding(model_name=get_settings().embed_model)
-    rows = [np.asarray(vector, dtype=np.float32) for vector in model.embed(texts)]
+    model_name = get_settings().embed_model
+    model = TextEmbedding(model_name=model_name)
+    prepared = _with_e5_prefix(texts, model_name)
+    rows = [np.asarray(vector, dtype=np.float32) for vector in model.embed(prepared)]
     if not rows:
         return np.zeros((0, DIM), dtype=np.float32)
     stacked = np.vstack(rows)

@@ -20,7 +20,7 @@ class GraphStore:
     def all_mechanisms(self) -> list[MechanismUnit]: ...
 ```
 
-`load()` 只读磁盘上的 pickle 与 npy，不重建向量。500 条机制建图与加载的实测数字在 `docs/state/p2.md`。
+`load()` 读取 `graph.pkl`、`mechanisms.jsonl`、`embeddings.npy`，不重建向量。缺 `mechanisms.jsonl` 会在加载时失败。500 条机制建图与加载的实测数字在 `docs/state/p2.md`。
 
 `/api/v1/graph/subgraph` 仍读样例 JSON。把 HTTP 接到 `GraphStore.subgraph` 属于 P3。
 
@@ -36,7 +36,7 @@ class GraphStore:
 
 默认是 `hash_embed`，`GraphStore.from_mechanisms` 和在线匹配都走它。特征哈希、L2 归一化、`float32`、维度 64。单测和 CI 不下载模型，语义分不能当成 e5 的结果。
 
-生产索引要换模型时调用 `embed_texts(texts, backend="fastembed")`。它懒加载 `fastembed`，模型名来自 `settings.embed_model`（默认 `intfloat/multilingual-e5-large`），返回前做 L2 归一化。未知 `backend` 抛 `ValueError`。不要引入 sentence-transformers 或 torch。
+生产索引要换模型时调用 `embed_texts(texts, backend="fastembed")`。它懒加载 `fastembed`，模型名来自 `settings.embed_model`（默认 `intfloat/multilingual-e5-large`），返回前做 L2 归一化。e5 模型名会给还没有 `query:` / `passage:` 前缀的文本加上 `query: `，因为这条模型要求前缀，而 `embed` 不会自动加。未知 `backend` 抛 `ValueError`。不要引入 sentence-transformers 或 torch。
 
 ## 动作词典
 

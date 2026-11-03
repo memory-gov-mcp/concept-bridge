@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from conceptbridge.graph.embeddings import embed_texts, hash_embed
+from conceptbridge.graph.embeddings import _with_e5_prefix, embed_texts, hash_embed
 
 
 def test_hash_embed_is_deterministic_unit_vectors() -> None:
@@ -40,3 +40,11 @@ def test_import_does_not_load_fastembed() -> None:
     import sys
 
     assert "fastembed" not in sys.modules
+
+
+def test_e5_prefix_is_applied_once() -> None:
+    model = "intfloat/multilingual-e5-large"
+    assert _with_e5_prefix(["SEI membrane"], model) == ["query: SEI membrane"]
+    assert _with_e5_prefix(["query: SEI"], model) == ["query: SEI"]
+    assert _with_e5_prefix(["passage: SEI"], model) == ["passage: SEI"]
+    assert _with_e5_prefix(["SEI"], "bge-small") == ["SEI"]
