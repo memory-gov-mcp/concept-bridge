@@ -13,6 +13,7 @@ import httpx
 
 from ..common.config import Settings, get_settings
 from ..common.logging import configure_logging, get_logger
+from .manifest import provenance
 from .normalize_text import normalize_work
 from .openalex import QUERIES, fetch_page
 
@@ -36,6 +37,9 @@ def _publish(raw: Path, state: dict[str, Any], limit: int) -> dict[str, Any]:
         ),
     )
     manifest = {
+        **provenance(),
+        "extractor_version": None,
+        "model": None,
         "ingestor_version": "ingest-v1",
         "paper_count": len(papers),
         "requested_limit": limit,
