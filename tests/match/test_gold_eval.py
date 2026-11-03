@@ -9,6 +9,8 @@ from conceptbridge.common.schemas import EvalReport, MechanismUnit
 from conceptbridge.match.candidate import score_pair
 from conceptbridge.match.gold_eval import (
     ablation_score,
+    build_report,
+    hard_negative_rates,
     hit_rate,
     main,
     mean_reciprocal_rank,
@@ -49,6 +51,16 @@ def test_ablation_drops_disabled_terms() -> None:
 def test_hit_rate_and_mrr() -> None:
     assert hit_rate([1, 6, 5], cutoff=5) == 2 / 3
     assert mean_reciprocal_rank([1, 11], cutoff=10) == 0.5
+
+
+def test_hard_negative_false_positive_rate_drops() -> None:
+    rates = hard_negative_rates()
+    assert rates.count == 10
+    assert rates.full < rates.without_triviality
+    report = build_report()
+    assert "误报率" in (report["notes"] or "")
+    assert f"{rates.without_triviality:.4f}" in report["notes"]
+    assert f"{rates.full:.4f}" in report["notes"]
 
 
 def test_eval_report_is_computed(tmp_path, capsys) -> None:
