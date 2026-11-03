@@ -1,0 +1,461 @@
+{
+  "method": "assistant-curated-from-real-openalex-abstracts",
+  "model": "Codex assistant in current conversation",
+  "extractor_version": "curated-codex-v1",
+  "selection": "Eight mechanism-bearing abstracts selected for cross-domain handoff, with two materials and two biology papers plus chemistry, medicine, computer science and physics",
+  "human_expert_review": "pending",
+  "papers": [
+    {
+      "paper_id": "W3153585982",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "lithiated COF channels",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "transport",
+            "action_class": "transport",
+            "polarity": "neutral"
+          },
+          "object": {
+            "surface": "Li ions",
+            "type": "substance"
+          },
+          "conditions": [
+            "lithiation",
+            "lithium_metal_battery"
+          ],
+          "result": "锂化 COF 通道作为快速锂离子输运层，使锂离子精确成核，并支持无枝晶、快充负极。",
+          "causality": "direct",
+          "evidence": {
+            "span": "When used as lithium hosts in Li metal batteries, lithium storage and charge transport are significantly improved. Both spectroelectrochemical and theoretical analyses demonstrate that lithiated COF channels are important as fast Li+ transport layers, by which Li ions can be precisely nucleated. This affords dendrite‐free and fast‐charging anodes, which would be difficult to achieve using individual components."
+          },
+          "confidence": 0.9
+        },
+        {
+          "subject": {
+            "surface": "MXene@COF heterostructure",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "promote",
+            "action_class": "promote",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "charge transport",
+            "type": "process"
+          },
+          "conditions": [
+            "lithium_metal_battery"
+          ],
+          "result": "MXene@COF 异质结构用作锂金属电池的锂宿主时，锂存储和电荷输运得到改善。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Unlike most COFs, which are generally produced as solid powders, ultrathin 2D COF‐LZU1 grows in situ on aminated Ti3C2Tx nanosheets with covalent bonding, producing a robust MXene@COF heterostructure with high crystallinity, hierarchical porosity, and conductive frameworks. When used as lithium hosts in Li metal batteries, lithium storage and charge transport are significantly improved."
+          },
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "paper_id": "W2884553835",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "electronically conducting, but ion-blocking barriers",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "regulate",
+            "action_class": "regulate",
+            "polarity": "neutral"
+          },
+          "object": {
+            "surface": "chemical potential",
+            "type": "state"
+          },
+          "conditions": [
+            "high_electric_current",
+            "large_temperature_gradient"
+          ],
+          "result": "论文提出利用导电子、阻离子屏障重置混合导体化学势，使其保持在分解阈值以下。",
+          "causality": "threshold",
+          "evidence": {
+            "span": "Then, a strategy for stable use is proposed: constructing a series of electronically conducting, but ion-blocking barriers to reset the chemical potential of such conductors to keep it below the threshold for decomposition, even if it is used with high electric currents and/or large temperature differences."
+          },
+          "confidence": 0.9
+        },
+        {
+          "subject": {
+            "surface": "electronically conducting, but ion-blocking barriers",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "inhibit",
+            "action_class": "inhibit",
+            "polarity": "inhibit"
+          },
+          "object": {
+            "surface": "decomposition",
+            "type": "process"
+          },
+          "conditions": [
+            "high_electric_current",
+            "large_temperature_gradient"
+          ],
+          "result": "提出的屏障策略通过将化学势维持在阈值以下，抑制高电流或大温差条件下的导体分解。",
+          "causality": "mediated",
+          "evidence": {
+            "span": "Then, a strategy for stable use is proposed: constructing a series of electronically conducting, but ion-blocking barriers to reset the chemical potential of such conductors to keep it below the threshold for decomposition, even if it is used with high electric currents and/or large temperature differences."
+          },
+          "confidence": 0.87
+        }
+      ]
+    },
+    {
+      "paper_id": "W1980558682",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "stretching of the membrane",
+            "type": "process"
+          },
+          "action": {
+            "verb": "trigger",
+            "action_class": "trigger",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "channels",
+            "type": "structure"
+          },
+          "conditions": [
+            "membrane_stretch"
+          ],
+          "result": "在酵母质膜的电生理研究中，膜拉伸激活离子通道，通道随后表现出对拉伸的适应。",
+          "causality": "direct",
+          "evidence": {
+            "span": "In electrophysiological studies of ion channels in the plasma membrane of the yeast Saccharomyces cerevisiae, channels were observed that were activated by, and adapted to, stretching of the membrane."
+          },
+          "confidence": 0.9
+        },
+        {
+          "subject": {
+            "surface": "mechanosensitive channels",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "transport",
+            "action_class": "transport",
+            "polarity": "neutral"
+          },
+          "object": {
+            "surface": "cations and anions",
+            "type": "substance"
+          },
+          "conditions": [
+            "membrane_stretch"
+          ],
+          "result": "受膜拉伸激活的机械敏感通道能够同时通透阳离子和阴离子；其膨压调节作用在原文中表述为可能性。",
+          "causality": "direct",
+          "evidence": {
+            "span": "In electrophysiological studies of ion channels in the plasma membrane of the yeast Saccharomyces cerevisiae, channels were observed that were activated by, and adapted to, stretching of the membrane. Adaptation of channel activity to mechanical stimuli was voltage-dependent. Because these mechanosensitive channels pass both cations and anions, they may play a role in turgor regulation in this walled organism."
+          },
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "paper_id": "W137033505",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "Kþ-induced depolarization",
+            "type": "state"
+          },
+          "action": {
+            "verb": "trigger",
+            "action_class": "trigger",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "voltage-gated Ca2þ channels",
+            "type": "structure"
+          },
+          "conditions": [
+            "membrane_depolarization"
+          ],
+          "result": "钾诱导的去极化使平滑肌细胞质膜上的电压门控钙通道开放。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Indeed, it is widely recognized that Kþ-induced depolarization causes the opening of voltage-gated Ca2þ channels in the SMC plasma membrane, through which Ca2þ enters the cell to initiate contraction."
+          },
+          "confidence": 0.92
+        },
+        {
+          "subject": {
+            "surface": "voltage-gated Ca2þ channels",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "transport",
+            "action_class": "transport",
+            "polarity": "neutral"
+          },
+          "object": {
+            "surface": "Ca2þ",
+            "type": "substance"
+          },
+          "conditions": [
+            "membrane_depolarization"
+          ],
+          "result": "去极化开放的钙通道允许钙进入细胞，进而启动细胞收缩。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Indeed, it is widely recognized that Kþ-induced depolarization causes the opening of voltage-gated Ca2þ channels in the SMC plasma membrane, through which Ca2þ enters the cell to initiate contraction."
+          },
+          "confidence": 0.92
+        },
+        {
+          "subject": {
+            "surface": "constant negative potential",
+            "type": "state"
+          },
+          "action": {
+            "verb": "inhibit",
+            "action_class": "inhibit",
+            "polarity": "inhibit"
+          },
+          "object": {
+            "surface": "cell contraction",
+            "type": "process"
+          },
+          "conditions": [
+            "negative_membrane_potential"
+          ],
+          "result": "持续的负膜电位有助于将胞内钙维持在低水平，并抑制肺动脉平滑肌细胞收缩。",
+          "causality": "mediated",
+          "evidence": {
+            "span": "The maintenance of a constant negative potential across the plasma membrane of pulmonary artery SMCs therefore helps to maintain [Ca2þ]i at a low level and inhibits cell contraction."
+          },
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "paper_id": "W120195886",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "transmembrane channels",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "transport",
+            "action_class": "transport",
+            "polarity": "neutral"
+          },
+          "object": {
+            "surface": "sodium ions",
+            "type": "substance"
+          },
+          "conditions": [
+            "planar_bilayer"
+          ],
+          "result": "杯芳烃衍生物形成跨膜通道，允许钠离子通过，并对更大的钾离子表现出排斥。",
+          "causality": "direct",
+          "evidence": {
+            "span": "The ion transporting ability of these, and other bilayer-spanning O-substituted calixarene derivatives, was determined by planar bilayer electrophysiological methods. Results showed that this modular approach to artificial ion channel construction was successful; calixarene derivatives formed transmembrane channels that allowed sodium ions to pass through but not the larger potassium ions."
+          },
+          "confidence": 0.92
+        },
+        {
+          "subject": {
+            "surface": "transmembrane channels",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "inhibit",
+            "action_class": "inhibit",
+            "polarity": "inhibit"
+          },
+          "object": {
+            "surface": "potassium ions",
+            "type": "substance"
+          },
+          "conditions": [
+            "planar_bilayer"
+          ],
+          "result": "杯芳烃衍生物形成的通道限制较大钾离子的通过，呈现离子大小选择性。",
+          "causality": "direct",
+          "evidence": {
+            "span": "The ion transporting ability of these, and other bilayer-spanning O-substituted calixarene derivatives, was determined by planar bilayer electrophysiological methods. Results showed that this modular approach to artificial ion channel construction was successful; calixarene derivatives formed transmembrane channels that allowed sodium ions to pass through but not the larger potassium ions."
+          },
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "paper_id": "W2017306058",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "nitric oxide",
+            "type": "substance"
+          },
+          "action": {
+            "verb": "inhibit",
+            "action_class": "inhibit",
+            "polarity": "inhibit"
+          },
+          "object": {
+            "surface": "leukocyte adhesion and transmigration",
+            "type": "process"
+          },
+          "conditions": [
+            "low_nitric_oxide_concentration"
+          ],
+          "result": "低浓度一氧化氮抑制黏附分子表达、细胞因子及趋化因子合成，以及白细胞黏附和迁移。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Low concentrations of nitric oxide produced by constitutive and neuronal nitric oxide synthases inhibit adhesion molecule expression, cytokine and chemokine synthesis and leukocyte adhesion and transmigration."
+          },
+          "confidence": 0.92
+        },
+        {
+          "subject": {
+            "surface": "nitric oxide",
+            "type": "substance"
+          },
+          "action": {
+            "verb": "promote",
+            "action_class": "promote",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "inflammation",
+            "type": "process"
+          },
+          "conditions": [
+            "high_nitric_oxide_concentration"
+          ],
+          "result": "大量一氧化氮可产生毒性和促炎作用，作用方向取决于浓度及细胞情境。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Large amounts of NO, generated primarily by iNOS can be toxic and pro-inflammatory. Actions of nitric oxide are however not dependent primarily on the enzymatic source, but rather on the cellular context, NO concentration (dependent on the distance from NO source) and initial priming of immune cells."
+          },
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "paper_id": "W117029714",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "reliability value",
+            "type": "state"
+          },
+          "action": {
+            "verb": "trigger",
+            "action_class": "trigger",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "true fitness function",
+            "type": "process"
+          },
+          "conditions": [
+            "reliability_below_threshold"
+          ],
+          "result": "快速粒子群优化仅在可靠性值低于阈值时调用真实适应度函数进行评价。",
+          "causality": "threshold",
+          "evidence": {
+            "span": "This paper introduces a new ”fast particle swarm optimization ” (FPSO) that does not evaluate all new positions owning a fitness and associated reliability value of each particle of the swarm and the reliability value is only evaluated using the true fitness function if the reliability value is below a threshold."
+          },
+          "confidence": 0.88
+        },
+        {
+          "subject": {
+            "surface": "random evaluation, reliability value update and self-adaptive threshold strategies",
+            "type": "process"
+          },
+          "action": {
+            "verb": "promote",
+            "action_class": "promote",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "performance of the algorithm",
+            "type": "state"
+          },
+          "conditions": [
+            "fast_particle_swarm_optimization"
+          ],
+          "result": "在快速粒子群优化中，联合采用随机评价、可靠性值更新和自适应阈值策略进一步改善算法表现。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Moreover, applying random evaluation, reliability value update and self-adaptive threshold strategies to the FPSO further enhances the performance of the algorithm."
+          },
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "paper_id": "W1966523973",
+      "mechanisms": [
+        {
+          "subject": {
+            "surface": "weakly coupled self-sustained chaotic oscillators",
+            "type": "structure"
+          },
+          "action": {
+            "verb": "stabilize",
+            "action_class": "stabilize",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "phases",
+            "type": "state"
+          },
+          "conditions": [
+            "weak_coupling",
+            "synchronous_regime"
+          ],
+          "result": "在弱耦合混沌振子的同步状态下，相位锁定，而振幅仍呈混沌变化且近乎不相关。",
+          "causality": "direct",
+          "evidence": {
+            "span": "We present the new effect of phase synchronization of weakly coupled self-sustained chaotic oscillators. To characterize this phenomenon, we use the analytic signal approach based on the Hilbert transform and partial Poincar\\'e maps. For coupled R\\\"ossler attractors, in the synchronous regime the phases are locked, while the amplitudes vary chaotically and are practically uncorrelated."
+          },
+          "confidence": 0.86
+        },
+        {
+          "subject": {
+            "surface": "Coupling a chaotic oscillator with a hyperchaotic one",
+            "type": "process"
+          },
+          "action": {
+            "verb": "stabilize",
+            "action_class": "stabilize",
+            "polarity": "promote"
+          },
+          "object": {
+            "surface": "frequencies",
+            "type": "state"
+          },
+          "conditions": [
+            "chaotic_hyperchaotic_coupling"
+          ],
+          "result": "混沌振子与超混沌振子耦合时可发生频率牵引，同时相位差保持无界。",
+          "causality": "direct",
+          "evidence": {
+            "span": "Coupling a chaotic oscillator with a hyperchaotic one, we observe another new type of synchronization, where the frequencies are entrained, while the phase difference is unbounded."
+          },
+          "confidence": 0.88
+        }
+      ]
+    }
+  ]
+}

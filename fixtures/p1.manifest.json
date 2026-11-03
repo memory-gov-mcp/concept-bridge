@@ -1,0 +1,28 @@
+{
+  "git_sha": "3cef12ae4ea08232288a95872af2bedaceeba5d3",
+  "created_at": "2026-11-03T14:08:22.426978+00:00",
+  "source_run_id": "run-eea6e466dc8e43b6",
+  "paper_count": 8,
+  "mechanism_count": 17,
+  "embedding": "P2 hash_embed",
+  "extraction": {
+    "model": "Codex assistant in current conversation",
+    "extractor_version": "curated-codex-v1",
+    "method": "assistant-curated-from-real-openalex-abstracts",
+    "human_review_status": "pending",
+    "draft_sha256": "3bc2960534cd3816937f4d643cf05be18c16e7e2deed87c61ffbf96006a12ac8",
+    "selection": "Eight mechanism-bearing abstracts selected for cross-domain handoff, with two materials and two biology papers plus chemistry, medicine, computer science and physics",
+    "external_model_api_calls": 0
+  },
+  "files": {
+    "bridge.pilot8.json": "f0459782c094c0acb27b47202c41f26e6d6fe76c78924a09298ae806f811ad46",
+    "graph.min.pkl": "227b8a3a167ab601a754df280719f6ea3ca4cfa5ca0d90abcc6a5eaa4cba7db3",
+    "graph.min/embeddings.npy": "6d5d4494d4da78c1da8fd9cecb3a897a6f4d031d1665edcb53e3991c80603b45",
+    "graph.min/graph.pkl": "227b8a3a167ab601a754df280719f6ea3ca4cfa5ca0d90abcc6a5eaa4cba7db3",
+    "graph.min/manifest.json": "5b249ed46e158508e9ca6c56b9d542c700fe6959fe0efa76bfa625c3596881e9",
+    "graph.min/mechanisms.jsonl": "06762ef6936a38d82a8d681aa00f077b0a75c0c16728aa03bbfb6f62cc140e77",
+    "mechanisms.min.jsonl": "06762ef6936a38d82a8d681aa00f077b0a75c0c16728aa03bbfb6f62cc140e77",
+    "papers.min.jsonl": "21f0c8f86915f57a6dd7c4de666b8400dad1547eaa3eff996aa5412f58203259",
+    "pilot8.drafts.json": "b29e7b562be45b307fd9020bc89faecf55c06495a3cb2c7685874bbab65d1db3"
+  }
+}
