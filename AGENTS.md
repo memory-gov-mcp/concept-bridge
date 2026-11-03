@@ -175,8 +175,8 @@ final = 0.45 * struct_sim + 0.30 * sem_sim + 0.25 * domain_dist - 0.35 * trivial
 | 图可视化 | Cytoscape.js | 力导向 + 自定义布局，双 cluster 可控 |
 | 动效 | Framer Motion + 自绘 SVG 弧 | 桥动画的核心 |
 | 测试 | pytest / vitest / MSW | 前端从 Day0 用 mock 独立跑 |
-| 质量 | ruff + mypy(strict 仅 common/match) + eslint | `uv run task check` |
-| 部署 | docker-compose（api + web） | 另有本地裸跑脚本 |
+| 质量 | ruff + mypy（`common/` + `api/`）+ eslint | `uv run task check` |
+| 部署 | 本地裸跑：`uv run task dev` / `task demo` | docker-compose **已推迟**——两天工期里多一个中间件就是多一个现场故障点 |
 
 **禁止引入**：Neo4j、Kafka、Redis、Celery、LangChain、LlamaIndex、sentence-transformers / torch、pandas 之外的重型数据处理库。理由：两天工期，每个中间件都是一次现场故障机会。（确需引入走 RFC，P3 评估。）
 
@@ -190,7 +190,7 @@ conceptbridge/
 ├── README.md                    # P3
 ├── Makefile                     # P3
 ├── pyproject.toml               # P3 独占（依赖变更在此）
-├── docker-compose.yml           # P3
+├── docker-compose.yml           # P3（**已推迟**：本机无法验证容器，见 docs/state/p3.md 技术债）
 ├── .env.example                 # P3
 ├── contracts/                   # P3 独占，全员只读
 │   ├── openapi.yaml
@@ -311,7 +311,7 @@ conceptbridge/
 |---|---|---|---|
 | GET | `/api/v1/health` | 存活 + 图规模 + 版本 | 前端启屏探活 |
 | POST | `/api/v1/bridge` | 主接口，返回 `BridgeResult` | 同步，硬超时 15s |
-| POST | `/api/v1/bridge/stream` | SSE 进度（P1） | 非必需，事后退化为 loading |
+| POST | `/api/v1/bridge/stream` | SSE 渐进返回：stage×3 → result → done | 已实现；前端可选，退化用同步接口 |
 | GET | `/api/v1/mechanisms/{id}` | 机制详情 + 原文 | 点击节点用 |
 | GET | `/api/v1/graph/subgraph` | 概念 N 跳子图 | `?concept_id=&hops=2` |
 | GET | `/api/v1/eval/report` | 评测指标 JSON | 答辩看板用 |
@@ -477,7 +477,8 @@ RFC-003 给 BridgeResult 增加 degraded 字段
 
 > **Day0 进度（2026-11-02 21:00 更新）**：骨架 + 契约 + API + fixture 兜底已完成并验证——
 > `uv run task check` 绿、`uv run task e2e` 3 条 query 通过、金标准 40 条已入库。
-> **四个人现在就可以开工，不必等 23:00 的冻结会。** 剩余：P1 的 200 篇 fixture、P4 的 web 骨架。
+> **四个人现在就可以开工，不必等 23:00 的冻结会。** P3 七张卡已全部 done；
+> 剩余：P1 的 200 篇 fixture、P4 的 web 骨架、P2 的 `match/pipeline.py`。
 
 ### Day 1 · 11-03 · 目标：**端到端跑通（fixture 数据）**
 
@@ -521,6 +522,7 @@ uv run task setup    # uv sync + npm ci
 uv run task dev      # api + web 一起起
 npm --prefix web run dev:mock   # 只起前端 + MSW（P4 负责脚本）
 uv run task check    # ruff + mypy + pytest(unit) + 契约测试 + tsc + eslint   ← 必须绿
+uv run task merge    # 合并窗口闸门 = check + e2e，不过不许合入 main
 uv run task e2e      # 3 条 demo query 端到端冒烟
 uv run task eval     # 生成 eval/reports/latest.md
 uv run task demo     # 离线演示模式（断网可用）
@@ -529,7 +531,7 @@ uv run task demo     # 离线演示模式（断网可用）
 `uv run task check` 的组成（缺一不可）：
 
 1. `ruff check .` 零 error。
-2. `mypy` 零 error（配置在 `pyproject.toml`，当前只覆盖 `common/`；`match/` 落地后加进去）。
+2. `mypy` 零 error（配置在 `pyproject.toml`，当前覆盖 `common/` + `api/`；`match/` 落地后把它加进去）。
 3. `pytest tests -q --ignore=tests/e2e` 全绿。
 4. `pytest tests/contract -q`：所有样例 JSON 过 schema，所有响应符合 OpenAPI。
 5. `npm --prefix web run typecheck` 零 error（P4 提供的脚本，内部跑 `tsc --noEmit` + `eslint`）。
@@ -587,7 +589,7 @@ uv run task demo     # 离线演示模式（断网可用）
 | 2:50–3:00 | 价值与边界 | 主动说局限：只做两类跨域，不吹通用 |
 
 **现场兜底（按顺序降级）**：
-1. 主用 `uv run task demo` 离线模式。
+1. 主用 `uv run task demo` 离线模式（启动前自动预检 5 项资产，缺东西直接拒绝启动，不会带到台上）。
 2. 网络/服务异常 → 立即切录屏（3 分钟 MP4，提前录好，播放器已打开）。
 3. 录屏也异常 → 用 PPT 内嵌的 GIF 逐帧讲。
 4. 无论哪级，**讲解不停**，别在台上 debug。
@@ -658,7 +660,7 @@ uv run task check          # 必须先看到 [check] OK，再动代码
 |---|---|---|
 | P1 | `uv run python -m conceptbridge.ingest.cli --limit 200` | `data/raw/papers.jsonl` 有 200 行 |
 | P2 | 写 `src/conceptbridge/match/pipeline.py` 的 `run_bridge()` | API 自动从 fixture 切到真实实现，无需通知任何人 |
-| P3 | 按 §9 补 `/bridge/stream` 与离线模式 | `uv run task demo` 断网可用 |
+| P3 | 七张卡已完成；后续只维护合并窗口与契约变更 | `uv run task merge` 全绿 |
 | P4 | `npm create vite@latest web -- --template react-ts` | 能对着 `:8000` 的结果页出界面 |
 
 **最重要的纪律**：只改 `docs/state/p<N>.md`，四个人四个文件，永不冲突。
