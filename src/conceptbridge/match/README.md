@@ -37,9 +37,11 @@ final = 0.45*struct_sim + 0.30*sem_sim + 0.25*domain_dist - 0.35*triviality
 1. **反琐碎惩罚**。泛化表面词「影响 / 促进 / 相关 / 参与」以及空条件会把 `triviality` 打成 1。12 类里的 `promote` 本身不因此被判死。
 2. **`alignment`**。规则解释为每条桥生成 subject、object 两条角色对齐。前端靠它画高亮。引用的 `span` 等于目标机制的 `evidence.span`。LLM 缓存命中时只替换假设和差异，不改引用。
 
-## 降级路径（现状）
+## 降级路径
 
-成功路径上 `meta.degraded` 固定为 false。匹配内部若抛异常，异常会冒到 API；API 退回 fixture，并把 `degraded` 标成 true、`stub` 标成 true。超时预算 `settings.bridge_timeout_s`（15 秒）尚未在 `run_bridge` 里使用。
+`run_bridge` 用 `settings.bridge_timeout_s`（默认 15 秒）。预算用尽时停在下一条桥之前，保留已经生成的桥，`meta.degraded=true`，`meta.stub=false`。这些桥的引用仍是目标机制的 `evidence.span`。
+
+内部异常不向外抛。返回空桥的合法 `BridgeResult`，`degraded=true`，`stub=false`，源域记为 `unknown`。不把 fixture 样例桥填进来。API 若仍收到异常，会再退回 fixture，那是第二层。
 
 ## 验收（P2-T3）
 
