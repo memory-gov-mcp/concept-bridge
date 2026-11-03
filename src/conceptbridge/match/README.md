@@ -43,6 +43,10 @@ final = 0.45*struct_sim + 0.30*sem_sim + 0.25*domain_dist - 0.35*triviality
 
 内部异常不向外抛。返回空桥的合法 `BridgeResult`，`degraded=true`，`stub=false`，源域记为 `unknown`。不把 fixture 样例桥填进来。API 若仍收到异常，会再退回 fixture，那是第二层。
 
+## 多步子图
+
+`match_subgraphs` 在概念节点不超过 8 个时用 VF2；结构对不上时用节点类型和边动作的排序差当作近似编辑距离，不跑精确 GED。任一侧超过 8 个节点就退回两条列表里的第一条机制，`degraded=True`，`mode="triple"`。在线 `run_bridge` 仍是单条机制打分。
+
 ## 验收（P2-T3）
 
 上面的 CLI 对「锂枝晶抑制」返回跨域桥，`stub=false`。证据见 `docs/state/p2.md`。
