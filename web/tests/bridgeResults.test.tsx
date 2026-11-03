@@ -4,6 +4,11 @@ import { BridgeResults } from "../src/components/BridgeResults";
 import { sample } from "../src/mocks/sample";
 
 describe("P4-T4 result panel", () => {
+  it("applies word wrapping throughout the result panel", () => {
+    const html = renderToStaticMarkup(<BridgeResults result={sample} />);
+    expect(html).toMatch(/<section id="bridge-results" class="[^"]*\bwrap-anywhere\b/);
+  });
+
   it("only offers graph navigation when the result page has a graph", () => {
     const withoutGraph = renderToStaticMarkup(<BridgeResults result={sample} />);
     const withGraph = renderToStaticMarkup(<BridgeResults result={sample} onInspectBridge={() => undefined} />);

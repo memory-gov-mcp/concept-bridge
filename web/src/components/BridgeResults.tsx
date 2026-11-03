@@ -103,7 +103,7 @@ export function BridgeResults({ result, onInspectBridge }: {
   const bridges = result.bridges ?? [];
   const sample = result.meta.stub === true || result.meta.graph_version === "fixtures";
   return (
-    <section id="bridge-results" className="mt-8 space-y-5" aria-label="桥接结果">
+    <section id="bridge-results" className="mt-8 space-y-5 wrap-anywhere" aria-label="桥接结果">
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <h2 className="min-w-0 text-2xl font-bold wrap-anywhere">{result.query}</h2>
         <p className="text-sm text-emerald-950/75">{bridges.length} 条跨域桥 · {result.meta.latency_ms} 毫秒</p>
