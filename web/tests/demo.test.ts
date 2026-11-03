@@ -12,6 +12,11 @@ describe("P4-T6 demo", () => {
     expect(advanceDemo(demoSteps.length - 1, 1)).toBe(demoSteps.length - 1);
   });
 
+  it("lets a focused horizontal region keep both arrow keys", () => {
+    expect(demoDirection("ArrowRight", true)).toBeUndefined();
+    expect(demoDirection("ArrowLeft", true)).toBeUndefined();
+  });
+
   it("offers the three preset topics and preserves the snapshot's identity", () => {
     expect(demoSteps.filter((step) => "query" in step).map((step) => step.query))
       .toEqual(["锂枝晶抑制", "锂枝晶抑制", "锂枝晶抑制", "催化剂失活", "蛋白质折叠"]);

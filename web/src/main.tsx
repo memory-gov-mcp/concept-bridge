@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { DemoPage } from "./components/DemoPage";
 import { EvalPage } from "./components/EvalPage";
@@ -18,6 +18,8 @@ function currentPage() {
 
 function App() {
   const [page, setPage] = useState(currentPage);
+  const content = useRef<HTMLDivElement>(null);
+  const previousPage = useRef(page);
   useEffect(() => {
     const changePage = () => {
       setPage(currentPage());
@@ -26,24 +28,35 @@ function App() {
     window.addEventListener("hashchange", changePage);
     return () => window.removeEventListener("hashchange", changePage);
   }, []);
+  useEffect(() => {
+    if (previousPage.current === page) return;
+    previousPage.current = page;
+    content.current?.focus({ preventScroll: true });
+  }, [page]);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-8 sm:py-9">
+        <a href="#page-content" onClick={(event) => { event.preventDefault(); content.current?.focus(); }}
+          className="sr-only focus:not-sr-only focus:mb-3 focus:inline-block focus:rounded-lg focus:bg-emerald-900 focus:px-4 focus:py-2 focus:text-white">
+          跳到页面内容
+        </a>
         <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <a href="#/" className="font-black tracking-wide text-emerald-950">概念桥 <span className="ml-1 text-xs tracking-widest">CONCEPTBRIDGE</span></a>
           <nav aria-label="主导航" className="flex rounded-full border border-border bg-card p-1 text-sm font-semibold">
             {pages.map((item) => (
               <a key={item.hash} href={item.hash} aria-current={page === item.hash ? "page" : undefined}
-                className={`rounded-full px-4 py-1.5 ${page === item.hash ? "bg-emerald-900 text-white" : "hover:bg-emerald-50"}`}>
+                className={`rounded-full px-4 py-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${page === item.hash ? "bg-emerald-900 text-white" : "hover:bg-emerald-50"}`}>
                 {item.label}
               </a>
             ))}
           </nav>
         </header>
-        {page === "#/" && <SearchPage mock={mock} />}
-        {page === "#/demo" && <DemoPage />}
-        {page === "#/eval" && <EvalPage />}
+        <div id="page-content" ref={content} tabIndex={-1} className="focus:outline-none">
+          {page === "#/" && <SearchPage mock={mock} />}
+          {page === "#/demo" && <DemoPage mock={mock} />}
+          {page === "#/eval" && <EvalPage mock={mock} />}
+        </div>
       </div>
     </main>
   );

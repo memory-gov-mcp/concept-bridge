@@ -1,7 +1,7 @@
 import { setupServer } from "msw/node";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { EvalDashboard } from "../src/components/EvalPage";
+import { EvalDashboard, EvalPage } from "../src/components/EvalPage";
 import { evalReport } from "../src/lib/api";
 import { evalSnapshot } from "../src/lib/evalSnapshot";
 import { handlers } from "../src/mocks/handlers";
@@ -11,6 +11,14 @@ beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterAll(() => server.close());
 
 describe("P4-T7 evaluation", () => {
+  it("labels the report source and keeps headings in order in demo mode", () => {
+    const standalone = renderToStaticMarkup(<EvalPage mock />);
+    const embedded = renderToStaticMarkup(<EvalPage offline embedded />);
+    expect(standalone).toMatch(/<h1[^>]*>评测看板<\/h1>/);
+    expect(standalone).toContain("Mock 快照");
+    expect(embedded).toMatch(/<h2[^>]*>评测看板<\/h2>/);
+    expect(embedded).toContain("离线快照");
+  });
   it("serves the committed report in mock mode", async () => {
     expect(await evalReport("http://localhost")).toEqual(evalSnapshot);
   });

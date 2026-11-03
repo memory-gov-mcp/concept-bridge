@@ -40,7 +40,7 @@ export function EvalDashboard({ report }: { report: EvalReport }) {
             )}
           </dl>
           <Card className="overflow-hidden">
-            <div className="overflow-x-auto focus-visible:outline-2 focus-visible:outline-emerald-700" tabIndex={0} role="region" aria-label="消融实验数据表">
+            <div className="overflow-x-auto focus-visible:outline-2 focus-visible:outline-emerald-700" tabIndex={0} role="region" aria-label="消融实验数据表" data-demo-scroll>
               <table className="w-full min-w-155 text-left">
                 <caption className="border-b border-border px-5 py-4 text-left text-lg font-bold">消融实验</caption>
                 <thead className="bg-emerald-950 text-sm text-white">
@@ -60,6 +60,7 @@ export function EvalDashboard({ report }: { report: EvalReport }) {
                 </tbody>
               </table>
             </div>
+            <p className="border-t border-border px-5 py-2 text-xs text-emerald-950/75 md:hidden">可横向滑动查看全部指标</p>
           </Card>
           <p className="text-sm">生成时间 <time dateTime={report.generated_at}>{Number.isNaN(generatedAt.valueOf()) ? report.generated_at : reportTime.format(generatedAt)}</time></p>
         </>
@@ -102,12 +103,20 @@ function LiveEval() {
   );
 }
 
-export function EvalPage({ offline = false }: { offline?: boolean }) {
+export function EvalPage({ offline = false, mock = false, embedded = false }: {
+  offline?: boolean;
+  mock?: boolean;
+  embedded?: boolean;
+}) {
+  const Heading = embedded ? "h2" : "h1";
+  const source = offline ? "离线快照" : mock ? "Mock 快照" : "后端 API";
   return (
     <section className="space-y-5" aria-labelledby="eval-title">
-      <header>
-        <p className="text-sm font-semibold text-emerald-800">结构匹配评测{offline && " · 离线快照"}</p>
-        <h2 id="eval-title" className="mt-2 text-3xl font-bold sm:text-4xl">评测看板</h2>
+      <header className="rounded-2xl border border-border bg-linear-to-br from-card to-emerald-50 p-5 sm:p-7">
+        <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-emerald-800">
+          结构匹配评测 <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-900">{source}</span>
+        </p>
+        <Heading id="eval-title" className="mt-2 text-3xl font-bold sm:text-4xl">评测看板</Heading>
       </header>
       {offline ? <EvalDashboard report={evalSnapshot} /> : <LiveEval />}
     </section>

@@ -17,7 +17,8 @@ export function getDemoReplay(query: string): BridgeResult | undefined {
   return query === fixture.query ? fixture : undefined;
 }
 
-export function demoDirection(key: string) {
+export function demoDirection(key: string, ownsArrowKeys = false) {
+  if (ownsArrowKeys) return;
   if (key === "ArrowRight") return 1;
   if (key === "ArrowLeft") return -1;
 }

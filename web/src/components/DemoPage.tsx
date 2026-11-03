@@ -52,11 +52,11 @@ function LiveSlide({ query, kind }: { query: string; kind: SlideKind }) {
   );
 }
 
-function DemoScene({ step, offline }: { step: (typeof demoSteps)[number]; offline: boolean }) {
-  if (step.kind === "eval") return <EvalPage offline={offline} />;
+function DemoScene({ step, offline, mock }: { step: (typeof demoSteps)[number]; offline: boolean; mock: boolean }) {
+  if (step.kind === "eval") return <EvalPage offline={offline} mock={mock} embedded />;
   if (step.kind === "question") {
     return (
-      <Card className="space-y-4 p-8 sm:p-12">
+      <Card className="space-y-4 rounded-3xl bg-linear-to-br from-card to-emerald-100/65 p-8 sm:p-12">
         <p className="text-sm font-bold tracking-widest text-emerald-800">预置研究难题</p>
         <p className="text-4xl font-bold sm:text-6xl">{step.query}</p>
         <p className="max-w-xl text-lg leading-relaxed">{step.description}</p>
@@ -75,7 +75,7 @@ function DemoScene({ step, offline }: { step: (typeof demoSteps)[number]; offlin
   );
 }
 
-export function DemoPage() {
+export function DemoPage({ mock = false }: { mock?: boolean }) {
   const [index, setIndex] = useState(0);
   const [offline, setOffline] = useState(true);
   const step = demoSteps[index];
@@ -86,7 +86,8 @@ export function DemoPage() {
       if (event.target instanceof HTMLElement && (
         event.target.isContentEditable || event.target.matches("input, textarea, select")
       )) return;
-      const direction = demoDirection(event.key);
+      const scrollRegion = event.target instanceof Element ? event.target.closest("[data-demo-scroll]") : null;
+      const direction = demoDirection(event.key, !!scrollRegion && scrollRegion.scrollWidth > scrollRegion.clientWidth);
       if (!direction) return;
       event.preventDefault();
       if (!event.repeat) setIndex((current) => advanceDemo(current, direction));
@@ -106,19 +107,28 @@ export function DemoPage() {
           <h1 id="demo-title" className="mt-2 text-3xl font-bold sm:text-4xl">演示模式</h1>
         </div>
         <div className="flex flex-wrap gap-2" aria-label="演示数据来源" role="group">
-          <button type="button" className={buttonClass} aria-pressed={offline} onClick={() => setOffline(true)}>离线回放</button>
-          <button type="button" className={buttonClass} aria-pressed={!offline} onClick={() => setOffline(false)}>实时查询</button>
+          <button type="button" className={`${buttonClass} aria-pressed:border-emerald-700 aria-pressed:bg-emerald-100`} aria-pressed={offline} onClick={() => setOffline(true)}>离线回放</button>
+          <button type="button" className={`${buttonClass} aria-pressed:border-emerald-700 aria-pressed:bg-emerald-100`} aria-pressed={!offline} onClick={() => setOffline(false)}>实时查询</button>
         </div>
       </header>
 
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-3" aria-label="演示进度" role="group">
-        <button type="button" className={buttonClass} disabled={index === 0} onClick={() => setIndex((current) => advanceDemo(current, -1))}>← 上一屏</button>
-        <button type="button" className={buttonClass} disabled={index === demoSteps.length - 1} onClick={() => setIndex((current) => advanceDemo(current, 1))}>下一屏 →</button>
-        <p role="status" className="text-sm font-semibold">第 {index + 1} / {demoSteps.length} 屏 · {step.title}</p>
-        <p className="text-sm text-emerald-950/75 sm:ml-auto">使用 ← → 切换</p>
+      <div className="space-y-3 rounded-2xl border border-border bg-card p-4 shadow-sm" aria-label="演示进度" role="group">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p role="status" className="font-semibold">第 {index + 1} / {demoSteps.length} 屏 · {step.title}</p>
+          <p className="text-sm text-emerald-950/75">使用 ← → 切换</p>
+        </div>
+        <div className="grid grid-cols-6 gap-1.5" aria-hidden="true">
+          {demoSteps.map((item, position) => (
+            <span key={item.title} className={`h-1.5 rounded-full ${position === index ? "bg-emerald-800" : position < index ? "bg-emerald-400" : "bg-emerald-100"}`} />
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button type="button" className={buttonClass} disabled={index === 0} onClick={() => setIndex((current) => advanceDemo(current, -1))}>← 上一屏</button>
+          <button type="button" className={buttonClass} disabled={index === demoSteps.length - 1} onClick={() => setIndex((current) => advanceDemo(current, 1))}>下一屏 →</button>
+        </div>
       </div>
 
-      <DemoScene step={step} offline={offline} />
+      <DemoScene step={step} offline={offline} mock={mock} />
     </section>
   );
 }
