@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+  build: { rollupOptions: { output: { manualChunks: { cytoscape: ["cytoscape"] } } } },
   server: {
     host: "127.0.0.1",
     port: mode === "mock" ? 5174 : 5173,

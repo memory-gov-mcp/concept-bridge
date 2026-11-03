@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { BridgeResult } from "../src/lib/api";
-import { bridgeGraph } from "../src/lib/bridgeGraph";
+import { bridgeArc, bridgeGraph } from "../src/lib/bridgeGraph";
 import { sample } from "../src/mocks/sample";
 
 describe("双域图模型", () => {
@@ -47,5 +47,9 @@ describe("双域图模型", () => {
     const items = model.elements.filter((item) => item.group === "nodes");
     expect(new Set(items.map((item) => item.data.id)).size).toBe(200);
     expect(new Set(items.map((item) => JSON.stringify(item.position))).size).toBe(200);
+  });
+
+  it("anchors the SVG curve at both rendered node positions", () => {
+    expect(bridgeArc({ x: 40, y: 80 }, { x: 340, y: 110 })).toMatch(/^M 40 80 C .+, 340 110$/);
   });
 });

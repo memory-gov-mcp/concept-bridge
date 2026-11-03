@@ -1,4 +1,4 @@
-import type { ElementDefinition } from "cytoscape";
+import type { ElementDefinition, Position } from "cytoscape";
 import type { Bridge, BridgeResult, GraphEdge, GraphNode, Mechanism } from "./api";
 
 type Side = "source" | "target";
@@ -96,4 +96,10 @@ export function bridgeGraph(result: BridgeResult, bridge: Bridge) {
     alignments,
     nodeCount: source.size + target.size,
   };
+}
+
+export function bridgeArc(start: Position, end: Position) {
+  const dx = end.x - start.x;
+  const arc = Math.min(62, Math.max(22, Math.abs(dx) * 0.18));
+  return `M ${start.x} ${start.y} C ${start.x + dx / 3} ${start.y - arc}, ${end.x - dx / 3} ${end.y - arc}, ${end.x} ${end.y}`;
 }
