@@ -34,3 +34,9 @@ eval/reports/*.md
 .DS_Store
 Thumbs.db
 *.log
+
+# 本地缓存（npm / pytest / 临时）
+.npm-cache/
+.tmp/
+.ptmp*/
+.no-index*/
