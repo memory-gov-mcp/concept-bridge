@@ -28,6 +28,8 @@ class Settings(BaseSettings):
 
     data_dir: Path = Path("./data")
     demo_mode: bool = False
+    # 只用本地缓存、禁止任何 LLM 外网请求；但**不**冻结图谱，真实语料照常使用
+    llm_offline: bool = False
     top_k: int = 5
     bridge_timeout_s: float = 15.0
     log_level: str = "INFO"
