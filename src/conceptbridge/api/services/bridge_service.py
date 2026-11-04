@@ -18,6 +18,7 @@ from ...common.config import fixture_path, get_settings
 from ...common.errors import AppError, ErrorCode
 from ...common.logging import get_logger
 from ...common.schemas import BridgeRequest, BridgeResult
+from .snapshot import current_snapshot
 
 log = get_logger(__name__)
 
@@ -55,7 +56,11 @@ def _load_fixture() -> dict[str, Any]:
 
 
 def _from_fixture(req: BridgeRequest) -> BridgeResult:
-    """兜底路径。返回的东西必须完全合法——演示时评委看到的不能是半成品。"""
+    """兜底路径。返回的东西必须完全合法——演示时评委看到的不能是半成品。
+
+    `graph_version` 统一取当前快照的版本，不用 fixture JSON 里写死的那个：
+    否则 `/bridge` 报 `g-2026...`、`/health` 报 `fixtures`，同一个页面两个版本号（RFC-P1-002）。
+    """
     raw = _load_fixture()
     result = BridgeResult.model_validate(raw)
 
@@ -64,6 +69,7 @@ def _from_fixture(req: BridgeRequest) -> BridgeResult:
     meta = result.meta.model_copy(
         update={
             "stub": True,
+            "graph_version": current_snapshot().version,
             "latency_ms": max(0, result.meta.latency_ms // 10),
             "candidates": max(result.meta.candidates, len(bridges)),
         }
