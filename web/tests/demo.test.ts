@@ -23,7 +23,18 @@ describe("P4-T6 demo", () => {
     const result = getDemoReplay("锂枝晶抑制");
     expect(result?.query).toBe("锂枝晶抑制");
     expect(result?.bridges).toHaveLength(2);
-    expect(getDemoReplay("蛋白质折叠")).toBeUndefined();
-    expect(getDemoReplay("催化剂失活")).toBeUndefined();
+  });
+
+  it("has an offline snapshot for every preset topic", () => {
+    // 回归护栏：曾经只有第一个预置题有快照，演示走到第二、三屏会变成"暂无离线快照"的死卡片。
+    // 要求 demoSteps 里出现的每个 query 都能 replay 到非空结果。
+    const queries = [...new Set(demoSteps.filter((step) => "query" in step).map((step) => step.query))];
+    for (const query of queries) {
+      const replay = getDemoReplay(query);
+      expect(replay, `${query} 缺少离线快照`).toBeDefined();
+      expect(replay?.query).toBe(query);
+      expect(replay?.bridges.length ?? 0).toBeGreaterThan(0);
+    }
+    expect(queries).toEqual(["锂枝晶抑制", "催化剂失活", "蛋白质折叠"]);
   });
 });

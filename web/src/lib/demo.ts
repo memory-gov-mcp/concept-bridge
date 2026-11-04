@@ -1,8 +1,22 @@
 import fixture from "../../../fixtures/bridge.sample.json";
 import type { BridgeResult } from "./api";
+import catalyst from "../mocks/demo-catalyst.json";
+import proteinFolding from "../mocks/demo-protein-folding.json";
 import { queryPresets } from "./presets";
 
 const [primary, second, third] = queryPresets;
+
+// JSON 导入的推断类型是宽泛的 string，直接 equals BridgeResult 会报类型不匹配；
+// 这里统一在边界处收窄一次，其余地方保持强类型。
+const asResult = (value: unknown) => value as BridgeResult;
+
+// 每个预置题都必须有离线快照，否则演示走到那一屏会变成"暂无快照"的死卡片。
+// 后两份是用真实 500 条机制语料导出的 BridgeResult（`POST /api/v1/bridge` 原样落盘）。
+const replayByQuery: Record<string, BridgeResult> = {
+  [primary.query]: asResult(fixture),
+  [second.query]: asResult(catalyst),
+  [third.query]: asResult(proteinFolding),
+};
 
 export const demoSteps = [
   { kind: "question", title: "提出源领域难题", ...primary },
@@ -14,7 +28,7 @@ export const demoSteps = [
 ] as const;
 
 export function getDemoReplay(query: string): BridgeResult | undefined {
-  return query === fixture.query ? fixture : undefined;
+  return replayByQuery[query];
 }
 
 export function demoDirection(key: string, ownsArrowKeys = false) {

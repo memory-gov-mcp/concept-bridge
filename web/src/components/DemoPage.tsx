@@ -52,7 +52,7 @@ function LiveSlide({ query, kind }: { query: string; kind: SlideKind }) {
   );
 }
 
-function DemoScene({ step, offline, mock }: { step: (typeof demoSteps)[number]; offline: boolean; mock: boolean }) {
+function DemoScene({ step, offline, mock, onLive }: { step: (typeof demoSteps)[number]; offline: boolean; mock: boolean; onLive: () => void }) {
   if (step.kind === "eval") return <EvalPage offline={offline} mock={mock} embedded />;
   if (step.kind === "question") {
     return (
@@ -70,7 +70,8 @@ function DemoScene({ step, offline, mock }: { step: (typeof demoSteps)[number]; 
     <Card className="space-y-3 p-6">
       <p className="text-xl font-bold">{step.query}</p>
       <p>{step.description}</p>
-      <p className="text-sm text-emerald-950/75">这个题目暂无离线快照。连接后端后，可以切换到实时查询演示。</p>
+      <p className="text-sm text-emerald-950/75">这个题目暂无离线快照。可以切到实时查询，或补一份快照。</p>
+      <button type="button" className={buttonClass} onClick={onLive}>切换到实时查询</button>
     </Card>
   );
 }
@@ -128,7 +129,7 @@ export function DemoPage({ mock = false }: { mock?: boolean }) {
         </div>
       </div>
 
-      <DemoScene step={step} offline={offline} mock={mock} />
+      <DemoScene step={step} offline={offline} mock={mock} onLive={() => setOffline(false)} />
     </section>
   );
 }
