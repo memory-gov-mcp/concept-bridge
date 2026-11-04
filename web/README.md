@@ -13,7 +13,7 @@ npm --prefix web run dev:mock
 - **演示** `#/demo` 用 `→` 和 `←` 切换六屏。离线回放使用仓库提供的「锂枝晶抑制」样例与评测快照。其余两个预置问题可切换到实时查询，离线时会注明缺少快照。
 - **评测** `#/eval` 读取 `/api/v1/eval/report`。Mock 模式由 MSW 提供仓库评测快照，实时模式由 FastAPI 提供报告。
 
-接真实 API 时，分别在两个终端运行 `uv run task dev` 和 `npm --prefix web run dev`，打开 http://127.0.0.1:5173/。Vite 将 API 请求转发到本机 8000 端口。
+接真实 API 时，分别在两个终端运行 `uv run task dev` 和 `npm --prefix web run dev`，打开 http://127.0.0.1:5173/。Vite 将 API 请求转发到本机 8000 端口。装好 `fixtures/corpus500.zip` 后，三个预置问题各自返回不同的双域图。
 
 ```bash
 npm --prefix web run test

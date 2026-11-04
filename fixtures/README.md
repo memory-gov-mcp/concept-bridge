@@ -20,7 +20,7 @@ uv run task dev
 安装会校验哈希和证据，生成概念表、归一产物及完整 P2 图谱到 `data/index/g-*/`。
 已有 1500 篇原始语料会保留，新环境写入包内 500 篇原文。输入冲突会报错，重复安装无需模型请求。
 当前主查询读取新图谱。`task demo`、`--fixtures` 仍使用旧预置样例，展示本批语料使用以上命令。
-当前机制详情、邻域接口与 health 版本尚待 P3 统一接线，见 RFC-P1-002。
+机制详情、邻域和 health 与主查询读同一份快照（`api/services/snapshot.py`）。没装索引时退回 `bridge.sample.json`。
 
 `mini200/` 是另行交付的 200 篇／500 机制小包，可供 P2 直接调用
 `GraphStore.load(Path("fixtures/mini200/graph.min"))`。整个 fixtures 目录小于 5 MB。
@@ -61,6 +61,6 @@ API 的 DEMO_MODE=1 同样走旧演示样例。读取本包时使用 DEMO_MODE=0
 
 本机通过 POST /api/v1/bridge 查询锂枝晶抑制，返回 HTTP 200 和 5 条跨域桥，
 stub=false、degraded=false；每条引用都可回查本包原文。
-机制详情、按节点拉取子图及 health 版本的统一接线仍由 P3 处理。
+详情、子图和 health 的版本已与主查询对齐。
 
 本包可供 P2 进行小规模真实数据建图和匹配联调。正式任务卡中的 200 篇 / 500 机制规模另行补齐。
