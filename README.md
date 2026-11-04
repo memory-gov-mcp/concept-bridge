@@ -24,6 +24,10 @@
 
 假设文案在没有模型缓存时由规则模板生成。第一条桥是结构签名对上的结果，类比本身仍可能牵强，页面上的差异说明就是用来标出不能照搬的地方。
 
+> **输入要怎么给**：选源是词面匹配，中文查询经一张术语表映射到英文（`锂枝晶→dendrite`、`催化剂→catalyst`、`蛋白质→protein`…）。
+> 词完全没命中时不会报错，而是回落到某个领域的机制——此时左侧图会变大、结果与查询关系变弱。
+> 词形变化还没覆盖（查 `immunity` 命不中语料里的 `immune`）。想看效果，优先用上面三个例子或它们里面的英文词。
+
 ---
 
 ## 跑起来
@@ -42,13 +46,29 @@ uv run task dev
 ```
 
 ```bash
-npm --prefix web ci
+npm --prefix web ci          # macOS / Linux
+npm.cmd --prefix web ci      # Windows：PowerShell 默认禁止运行 npm.ps1
 npm --prefix web run dev
 ```
 
 浏览器打开 <http://127.0.0.1:5173/>。Vite 把 `/api/v1` 转到本机 8000。`DEMO_MODE` 默认关闭，装好索引后主查询走这 500 篇，`meta.stub` 为 false。
 
 没有 Node 时，只起 API，打开 <http://127.0.0.1:8000/>。这是后端自带的单页（约 10.8 KB，无外部资源），能查、能看桥、假设、差异和引用，没有双域动画。
+
+### 网络受限时（PyPI / npm 的 HTTPS 不通）
+
+明文 HTTP 的国内镜像通常仍然可用，两条命令换成：
+
+```bash
+uv sync --extra analyze --default-index http://mirrors.aliyun.com/pypi/simple --allow-insecure-host mirrors.aliyun.com
+```
+
+```bash
+npm.cmd --prefix web install --no-package-lock --registry=http://registry.npmmirror.com
+```
+
+注意 `npm install --no-package-lock`：仓库里的 lock 记录的是官方 https 地址，`npm ci` 会照它去拉，网络受限时必挂。
+装完之后用 `uv run --offline task ...` 可以避免 uv 再次联网解析依赖。
 
 ### 现场演示
 
@@ -72,8 +92,9 @@ uv run task demo --corpus
 
 1. 从摘要抽出机制四元组：主体、动作、客体、条件与结果，并带原文偏移。
 2. 动作收进 12 类：inhibit、promote、transport、transform、recognize、amplify、stabilize、degrade、compete、isolate、trigger、regulate。
-3. 候选按结构签名打分，语义相似度作软约束，跨领域加分，空条件、泛化动词和换皮同名会被反琐碎项压下去。
-4. 返回最多 5 条目标领域不同于源领域的桥。
+3. 定位源机制：整词命中 + IDF 加权（压掉 li、inhibit 这类泛词），中文查询先经术语表，零命中才退回字符匹配。
+4. 候选按结构签名打分，语义相似度作软约束，跨领域加分，空条件、泛化动词和换皮同名会被反琐碎项压下去。
+5. 返回最多 5 条目标领域不同于源领域的桥。
 
 默认语义向量是哈希嵌入，用来让离线演示不下载模型。它不是 `multilingual-e5-large` 的结果。
 
@@ -102,6 +123,7 @@ uv run task demo --corpus
 - 可运行的图是 500 篇、1394 条机制。采集器另有 1500 篇原文的记录；正式的「500 篇抽出至少 1200 条、schema 通过率 ≥98%、人工抽检 ≥80%」还没有作为达标证据关闭。这 1394 条里剔除过 42 条比较或描述性关系，独立人工审核仍未完成。
 - 显式指定源领域时，仍会返回该领域的全部机制，左侧图会重新变大。
 - 机制详情、邻域和健康检查与主查询读同一份快照。快照缺失时退回冻结样例。
+- 前端 CI 的 `typecheck / test / build` 目前有一项未通过（后端 matrix 与后端测试均通过）；`npm run dev` 不做类型检查，界面仍可正常演示。
 
 ---
 
@@ -112,5 +134,7 @@ uv run task check    # ruff、mypy、pytest、契约、前端 typecheck
 uv run task e2e      # 3 条演示查询
 uv run task eval     # 重写 eval/reports/latest.md
 ```
+
+依赖已装好、但网络受限时统一加 `--offline`：`uv run --offline task check`。
 
 产品叙事、结构签名和答辩讲法在 [docs/intro.md](docs/intro.md)。工程契约、数据格式和任务卡在 [AGENTS.md](AGENTS.md)。各模块进度在 [docs/STATE.md](docs/STATE.md)。
