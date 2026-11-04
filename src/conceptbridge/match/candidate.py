@@ -90,6 +90,8 @@ _CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 _CN_TERMS: dict[str, tuple[str, ...]] = {
     "锂枝晶": ("dendrite", "dendritic"),
     "枝晶": ("dendrite", "dendritic"),
+    # 论文标题常写 Li metal，而不是 lithium。li 只作整词，不会嵌进 limit。
+    "锂": ("lithium", "li"),
     "催化剂": ("catalyst", "catalytic"),
     "催化": ("catalyst", "catalytic"),
     "失活": ("deactivation", "deactivate"),
@@ -172,18 +174,55 @@ def _score_words(
     ]
 
 
+# 同一分档可能有几十条。图谱和候选都从这里长出来，超过这个数左侧又会变成一团点。
+SOURCE_LIMIT = 5
+
+
+def _surface_text(mechanism: MechanismUnit) -> str:
+    return " ".join(
+        [mechanism.subject.surface, mechanism.action.verb, mechanism.object.surface]
+    )
+
+
+def _surface_hits(mode: str, tokens: set[str], mechanism: MechanismUnit) -> int:
+    """只统计落在主体、动作、客体上的词。结果正文里的偶然出现不抬高排序。"""
+    if mode == "word":
+        return len(tokens & _ascii_words(_surface_text(mechanism)))
+    surface = _surface_text(mechanism)
+    return sum(1 for token in tokens if token in surface)
+
+
+def _preferred_sources(
+    mode: str,
+    tokens: set[str],
+    scored: list[tuple[float, MechanismUnit]],
+) -> list[MechanismUnit]:
+    """先看标题词面，再看 IDF。取最高那条所在领域，最多 SOURCE_LIMIT 条。"""
+    ranked = [
+        (_surface_hits(mode, tokens, item), score, item.id, item)
+        for score, item in scored
+        if score > 0
+    ]
+    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))
+    if not ranked:
+        return []
+    domain = ranked[0][3].domain
+    return [row[3] for row in ranked if row[3].domain == domain][:SOURCE_LIMIT]
+
+
 def select_sources(
     query: str,
     mechanisms: list[MechanismUnit],
     source_domain: str | None,
 ) -> list[MechanismUnit]:
-    """有词面重叠就用重叠最高的领域；没有则退回一个仍能跨域的源领域。"""
+    """定位查询对应的源机制。显式领域返回该领域全部；自动定位最多 SOURCE_LIMIT 条。"""
     if source_domain:
         picked = [item for item in mechanisms if item.domain == source_domain]
         if picked:
             return picked
 
     mode, tokens = _query_mode(query)
+    hit_mode, hit_tokens = mode, tokens
     if not tokens:
         scored: list[tuple[float, MechanismUnit]] = [(0.0, item) for item in mechanisms]
     elif mode == "char":
@@ -193,26 +232,22 @@ def select_sources(
         # 中文查询映射成了英文词，但语料本身是中文（fixture）时，词面必然零命中，
         # 这时退回中文字符匹配，否则会一路掉到"返回整个领域"的兜底。
         if max((score for score, _ in scored), default=0.0) <= 0 and _CJK_RE.search(query):
-            scored = _score_chars(_cjk_grams(query), mechanisms)
+            hit_tokens = _cjk_grams(query)
+            hit_mode = "char"
+            scored = _score_chars(hit_tokens, mechanisms)
 
-    best_score = max((score for score, _ in scored), default=0.0)
-    if best_score > 0:
-        # 只取最高分档：原先的 `> 0` 会把一个弱命中拖进整个领域（中文查询返回 92 条就是这么来的）
-        winners = [item for score, item in scored if score >= best_score - 1e-9]
-        counts: dict[str, int] = {}
-        for item in winners:
-            counts[item.domain] = counts.get(item.domain, 0) + 1
-        top_domain = max(counts, key=lambda name: counts[name])
-        return [item for item in winners if item.domain == top_domain]
+    preferred = _preferred_sources(hit_mode, hit_tokens, scored)
+    if preferred:
+        return preferred
 
     by_domain: dict[str, list[MechanismUnit]] = {}
     for item in mechanisms:
         by_domain.setdefault(item.domain, []).append(item)
     if "materials_science" in by_domain and len(by_domain) > 1:
-        return by_domain["materials_science"]
+        return by_domain["materials_science"][:SOURCE_LIMIT]
     for domain, group in by_domain.items():
         if any(item.domain != domain for item in mechanisms):
-            return group
+            return group[:SOURCE_LIMIT]
     return mechanisms[:1]
 
 
