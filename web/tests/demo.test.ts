@@ -33,7 +33,7 @@ describe("P4-T6 demo", () => {
       const replay = getDemoReplay(query);
       expect(replay, `${query} 缺少离线快照`).toBeDefined();
       expect(replay?.query).toBe(query);
-      expect(replay?.bridges.length ?? 0).toBeGreaterThan(0);
+      expect(replay?.bridges?.length ?? 0).toBeGreaterThan(0);
     }
     expect(queries).toEqual(["锂枝晶抑制", "催化剂失活", "蛋白质折叠"]);
   });
