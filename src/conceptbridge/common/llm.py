@@ -110,8 +110,9 @@ class LLMClient:
                 log.debug("llm_cache_hit", extra={"kv": {"key": key}})
                 return hit
 
-        if self.settings.demo_mode:
-            raise LLMUnavailable(f"DEMO_MODE 下缓存未命中（key={key}）")
+        if self.settings.demo_mode or self.settings.llm_offline:
+            mode = "DEMO_MODE" if self.settings.demo_mode else "LLM_OFFLINE"
+            raise LLMUnavailable(f"{mode} 下缓存未命中（key={key}）")
 
         if not self.settings.llm_api_key:
             raise LLMUnavailable("未配置 LLM_API_KEY，见 .env.example")

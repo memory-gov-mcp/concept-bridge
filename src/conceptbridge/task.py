@@ -7,12 +7,13 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
 import os
 import shutil
 import subprocess
 import sys
 
-from .common.config import REPO_ROOT
+from .common.config import REPO_ROOT, get_settings
 
 PY = sys.executable
 
@@ -133,9 +134,40 @@ DEMO_ASSETS: tuple[tuple[str, str, bool], ...] = (
 )
 
 
-def _demo_preflight() -> int:
+def _fixture_mechanism_count() -> int:
+    path = REPO_ROOT / "fixtures" / "bridge.sample.json"
+    if not path.exists():
+        return 0
+    with contextlib.suppress(Exception):
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return len(raw.get("source", {}).get("mechanisms", [])) + len(raw.get("bridges", []))
+    return 0
+
+
+def _corpus_index() -> tuple[str, int] | None:
+    """最新真实语料快照的 (版本名, 机制数)。没装返回 None。"""
+    index = get_settings().resolved_data_dir / "index"
+    if not index.is_dir():
+        return None
+    for path in sorted(index.iterdir(), reverse=True):
+        if not (path / "graph.pkl").exists():
+            continue
+        count = 0
+        manifest = path / "manifest.json"
+        if manifest.exists():
+            with contextlib.suppress(Exception):
+                count = int(
+                    json.loads(manifest.read_text(encoding="utf-8")).get("mechanism_count", 0)
+                )
+        return path.name, count
+    return None
+
+
+def _demo_preflight(corpus: bool = False) -> int:
     """演示前把能检查的都检查掉。现场少一次意外，比多一个功能值。"""
-    print("== 离线演示预检（DEMO_MODE=1，禁止外网）==")
+    mode = "真实语料 + 禁外网（LLM 只读缓存）" if corpus else "冻结样例（DEMO_MODE=1）"
+    print(f"== 演示预检：{mode} ==")
+
     hard_missing: list[str] = []
     soft_missing: list[str] = []
     for rel, desc, hard in DEMO_ASSETS:
@@ -143,6 +175,22 @@ def _demo_preflight() -> int:
         print(f"  [{'OK  ' if exists else 'MISS'}] {rel:<36} {desc}")
         if not exists:
             (hard_missing if hard else soft_missing).append(rel)
+
+    # 真实语料：--corpus 时必须已安装；默认演示只报告，不阻塞
+    installed = _corpus_index()
+    if installed is None:
+        print("  [MISS] data/index/g-*                        真实语料索引")
+        print("         安装：uv sync --extra analyze && uv run python scripts/ingest_corpus.py")
+        if corpus:
+            hard_missing.append("data/index/g-*")
+    else:
+        version, count = installed
+        print(f"  [OK  ] data/index/{version:<24} 真实语料索引（{count} 条机制）")
+        if not corpus:
+            print(
+                f"         当前演示用的是冻结样例（{_fixture_mechanism_count()} 条机制）；"
+                "要看真实语料用：uv run task demo --corpus"
+            )
 
     if soft_missing:
         print("\n  ! 缺评测报告：答辩前跑一次 `uv run task eval`，否则 /eval/report 是空的")
@@ -155,13 +203,15 @@ def _demo_preflight() -> int:
     return 0
 
 
-def cmd_demo() -> int:
-    if _demo_preflight() != 0:
+def cmd_demo(corpus: bool = False) -> int:
+    if _demo_preflight(corpus=corpus) != 0:
         return 1
     print("\n地址 http://127.0.0.1:8000/docs   （Ctrl+C 退出）\n")
+    # --corpus：不冻结图谱（走真实语料），但仍然禁外网——LLM 只读缓存
+    env = {"DEMO_MODE": "0", "LLM_OFFLINE": "1"} if corpus else {"DEMO_MODE": "1"}
     return _run(
         [PY, "-m", "uvicorn", "conceptbridge.api.main:app", "--port", "8000"],
-        env={"DEMO_MODE": "1"},
+        env=env,
     )
 
 
@@ -201,9 +251,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="task", description="ConceptBridge 任务入口")
     parser.add_argument("command", choices=sorted(COMMANDS))
     parser.add_argument("arg", nargs="?", default=None, help="可选参数（如 freeze 的 tag）")
+    parser.add_argument(
+        "--corpus",
+        action="store_true",
+        help="仅 demo：用真实语料而非冻结样例（仍然禁外网，LLM 只读缓存）",
+    )
     ns = parser.parse_args(argv)
     if ns.command == "freeze":
         return cmd_freeze(ns.arg)
+    if ns.command == "demo":
+        return cmd_demo(corpus=ns.corpus)
     return COMMANDS[ns.command]()
 
 

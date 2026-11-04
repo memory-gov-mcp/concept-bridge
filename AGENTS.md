@@ -525,7 +525,8 @@ uv run task check    # ruff + mypy + pytest(unit) + 契约测试 + tsc + eslint 
 uv run task merge    # 合并窗口闸门 = check + e2e，不过不许合入 main
 uv run task e2e      # 3 条 demo query 端到端冒烟
 uv run task eval     # 生成 eval/reports/latest.md
-uv run task demo     # 离线演示模式（断网可用）
+uv run task demo     # 冻结样例 + 禁外网（绝不翻车，只有 4 条机制）
+uv run task demo --corpus  # 真实语料 + 禁外网（LLM 只读缓存），答辩用这个
 ```
 
 `uv run task check` 的组成（缺一不可）：
@@ -622,7 +623,8 @@ LLM_API_KEY=
 LLM_MODEL=deepseek-chat
 EMBED_MODEL=intfloat/multilingual-e5-large
 DATA_DIR=./data
-DEMO_MODE=0                            # 1 = 只用缓存与 fixtures, 禁止外网
+DEMO_MODE=0        # 1 = 冻结图谱到预置样例 + 禁外网（绝不翻车的现场演示）
+LLM_OFFLINE=0      # 1 = 仍用真实语料，但禁止任何 LLM 外网请求（只读缓存）
 TOP_K=5
 LOG_LEVEL=INFO
 ```
