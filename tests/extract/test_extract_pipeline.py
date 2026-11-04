@@ -127,6 +127,7 @@ def test_p2_graph_round_trip_and_install(tmp_path, monkeypatch):
     report = export_bundle(settings, output, paper_count=2, mechanism_count=2, install_index=True)
     store = GraphStore.load(output / "graph.min")
     assert len(store.all_mechanisms()) == 2
+    assert b"\r\n" not in (output / "graph.min/mechanisms.jsonl").read_bytes()
     assert (output / "graph.min.pkl").read_bytes() == (output / "graph.min/graph.pkl").read_bytes()
     monkeypatch.setattr("conceptbridge.match.pipeline.get_settings", lambda: settings)
     units, version = load_corpus()

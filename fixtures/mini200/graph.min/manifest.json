@@ -1,0 +1,9 @@
+{
+  "git_sha": "977f0e7af3822f22eab7a507d42be6aa6e4c7fa2",
+  "mechanism_count": 500,
+  "node_count": 939,
+  "graph_version": "run-5e426859d6984b83",
+  "created_at": "2026-11-04T00:56:50Z",
+  "source_run_id": "run-5e426859d6984b83",
+  "embedding": "P2 hash_embed"
+}

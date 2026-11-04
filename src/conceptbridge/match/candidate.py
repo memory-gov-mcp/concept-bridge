@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 
@@ -32,9 +33,13 @@ def _text(mechanism: MechanismUnit) -> str:
     )
 
 
+@lru_cache(maxsize=8192)
+def _vector(text: str) -> np.ndarray:
+    return hash_embed([text])[0]
+
+
 def _cosine(left: str, right: str) -> float:
-    vectors = hash_embed([left, right])
-    return float(np.clip(np.dot(vectors[0], vectors[1]), 0.0, 1.0))
+    return min(1.0, max(0.0, float(np.dot(_vector(left), _vector(right)))))
 
 
 def score_pair(source: MechanismUnit, target: MechanismUnit) -> BridgeScores:
@@ -44,15 +49,18 @@ def score_pair(source: MechanismUnit, target: MechanismUnit) -> BridgeScores:
         " ".join([target.action.verb, *target.conditions, target.result]),
     )
     distance = domain_distance(source.domain, target.domain)
-    name_similarity = max(
-        _cosine(source.subject.surface, target.subject.surface),
-        _cosine(source.object.surface, target.object.surface),
-    )
     triviality = triviality_penalty(
         target.signature,
         verb=target.action.verb,
-        name_similarity=name_similarity,
     )
+    if triviality == 0.0:
+        name_similarity = max(
+            _cosine(source.subject.surface, target.subject.surface),
+            _cosine(source.object.surface, target.object.surface),
+        )
+        triviality = triviality_penalty(
+            target.signature, verb=target.action.verb, name_similarity=name_similarity
+        )
     return BridgeScores(
         structural=structural,
         semantic=semantic,

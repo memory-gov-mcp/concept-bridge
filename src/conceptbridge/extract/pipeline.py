@@ -181,7 +181,7 @@ def publish_run(
             for row in random.Random(0).sample(rows, min(20, len(rows)))
         ],
     )
-    fresh = len(papers) - stats["task_cache_hits"]
+    fresh = len(papers) - stats["task_cache_hits"] - stats.get("imported_papers", 0)
     manifest = {
         **provenance(),
         **identity,
