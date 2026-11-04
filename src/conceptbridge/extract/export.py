@@ -106,6 +106,8 @@ def _export_locked(
         )
         graph_dir = staging / "graph.min"
         GraphStore.from_mechanisms(units, version=run_id).save(graph_dir)
+        mechanism_path = graph_dir / "mechanisms.jsonl"
+        write_text(mechanism_path, mechanism_path.read_text(encoding="utf-8"))
         graph_manifest = json.loads((graph_dir / "manifest.json").read_text(encoding="utf-8"))
         graph_manifest.update(graph_version=run_id, source_run_id=run_id, embedding="P2 hash_embed")
         write_json(graph_dir / "manifest.json", graph_manifest)

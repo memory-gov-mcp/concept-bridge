@@ -1,0 +1,33 @@
+{
+  "git_sha": "977f0e7af3822f22eab7a507d42be6aa6e4c7fa2",
+  "created_at": "2026-11-04T00:56:51.000943+00:00",
+  "source_run_id": "run-5e426859d6984b83",
+  "paper_count": 200,
+  "mechanism_count": 500,
+  "embedding": "P2 hash_embed",
+  "extraction": {
+    "model": [
+      "看山工作台 Agent（当前会话主模型，供应商具体模型名不可确认）",
+      "Codex current session; exact supplier model unavailable"
+    ],
+    "extractor_version": [
+      "agent-handoff-reviewed-v1",
+      "agent-handoff-v1",
+      "curated-codex-v1"
+    ],
+    "method": "agent_assisted",
+    "human_review_status": "pending",
+    "draft_sha256": null,
+    "selection": null,
+    "external_model_api_calls": 0
+  },
+  "files": {
+    "graph.min/embeddings.npy": "f8e4d1ee17881f1cf29e4f8be164828dac1f0e708ed0a87a12faa43ac78fd258",
+    "graph.min/graph.pkl": "926364d00bc4545b9d324382bb300411881e43bf69963ac5ab35dda1ed6b4408",
+    "graph.min/manifest.json": "e614c5c4178efce2f48814ab17d6d779d46560acd4a3ba14af727816e7e85cee",
+    "graph.min/mechanisms.jsonl": "cf31f87f50123cd11c58fe01a1646270a6bec48011b8aff25f6c98d391499b7c",
+    "graph.min.pkl": "926364d00bc4545b9d324382bb300411881e43bf69963ac5ab35dda1ed6b4408",
+    "mechanisms.min.jsonl": "cf31f87f50123cd11c58fe01a1646270a6bec48011b8aff25f6c98d391499b7c",
+    "papers.min.jsonl": "fedd7810ee8392f20a346614c0570c765a56a19615a575950b442b84480e00e2"
+  }
+}
