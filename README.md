@@ -84,3 +84,17 @@ fixtures/   迷你数据 + 合法样例（CI 与前端 mock 用）
 eval/       金标准与消融报告                            (P2)
 docs/       STATE.md 交接板 / 阻塞 / 技术债 / RFC
 ```
+
+## 不装前端也能看界面
+
+`web/node_modules` 缺失时 Vite 起不来，而后端自带一个**自包含**的极简界面
+（纯 HTML + 原生 JS，零外部资源，10.8 KB）：
+
+```powershell
+uv run task demo
+# 浏览器打开 http://127.0.0.1:8000/
+```
+
+它直接调 `/api/v1/health` 与 `/api/v1/bridge`，显示健康横幅、双域对照、桥分数、
+可迁移假设、差异与原文引用。断网、没装 Node、CI 缓存失效时都能用。
+

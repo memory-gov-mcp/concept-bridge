@@ -195,6 +195,8 @@ def _demo_preflight(corpus: bool = False) -> int:
     if soft_missing:
         print("\n  ! 缺评测报告：答辩前跑一次 `uv run task eval`，否则 /eval/report 是空的")
 
+    print("\n  离线极简界面：http://127.0.0.1:8000/    （不依赖 node_modules，可直接演示）")
+
     if hard_missing:
         print("\n[预检失败] 必需资产缺失：" + ", ".join(hard_missing))
         return 1
